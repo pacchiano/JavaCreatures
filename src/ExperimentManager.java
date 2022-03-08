@@ -85,7 +85,7 @@ public class ExperimentManager {
 
 	public void set_experiment_params(String experiment_name) {
 		this.experiment_name = experiment_name;
-    	this.num_experiments = 10;
+    	this.num_experiments = 30;
     	this.num_fruit_types = 3;
     	this.num_fruit_bandit_worlds = 1;
     	this.worlds_probabilities = new double[1];
