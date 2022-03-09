@@ -101,7 +101,7 @@ public class ExperimentManager {
     	
     	this.stay_sick_probability = .5;
     	this.es_std = .1;
-    	this.num_iterations = 100000;//10000;
+    	this.num_iterations = 10000;//10000;
     	this.creature_horizon = 10000;
     	this.step_size = .1;
     	this.creature_learning_rate = 0;
