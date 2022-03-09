@@ -197,7 +197,9 @@ def plot_probabilities_results(plot_filename, plot_title, probabilities_matrix, 
 if __name__ == "__main__":
 	num_fruit_types = 3
 	num_iterations = 10000
-	creature_horizon = 10000
+	creature_horizon = 1000
+
+	averaging_window = 10
 
 	for experiment_name in ["MultiWorldScenarioReactive1", "MultiWorldScenarioAdaptive1"]:#, "Scenario1","Scenario2","Scenario3","Scenario4","Scenario5" ]:
 
@@ -214,7 +216,7 @@ if __name__ == "__main__":
 		if num_iterations != results["num_iterations"]:
 			raise ValueError("num iterations do not agree in log file")
 
-		plot_reward_results(reward_plot_filename, reward_plot_title, results_matrix, num_iterations, averaging_window = 100)
+		plot_reward_results(reward_plot_filename, reward_plot_title, results_matrix, num_iterations, averaging_window = averaging_window)
 
 		probabilities_matrix_creature = results["used_probabilities_creature"]
 
@@ -222,7 +224,7 @@ if __name__ == "__main__":
 
 		probabilities_creature_plot_filename, probabilities_creature_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "creature" )
 		plot_probabilities_results(probabilities_creature_plot_filename, probabilities_creature_plot_title, 
-			probabilities_matrix_creature, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = 100)
+			probabilities_matrix_creature, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
 
 
 		probabilities_matrix_evolver = results["used_probabilities_evolver"]
@@ -230,19 +232,19 @@ if __name__ == "__main__":
 
 		probabilities_evolver_plot_filename, probabilities_evolver_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "evolver" )
 		plot_probabilities_results(probabilities_evolver_plot_filename, probabilities_evolver_plot_title, 
-			probabilities_matrix_evolver, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = 100)
+			probabilities_matrix_evolver, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
 
 
 		probabilities_difference_plot_filename, probabilities_difference_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "absolute-difference" )
 		probabilities_matrix_difference = np.abs(np.array(probabilities_matrix_evolver) - np.array(probabilities_matrix_creature))
 		plot_probabilities_results(probabilities_difference_plot_filename, probabilities_difference_plot_title, 
-			probabilities_matrix_difference, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = 100)
+			probabilities_matrix_difference, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
 
 
 		probabilities_difference_plot_filename, probabilities_difference_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "signed-difference" )
 		probabilities_matrix_difference = np.array(probabilities_matrix_evolver) - np.array(probabilities_matrix_creature)
 		plot_probabilities_results(probabilities_difference_plot_filename, probabilities_difference_plot_title, 
-			probabilities_matrix_difference, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = 100)
+			probabilities_matrix_difference, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
 
 
 
