@@ -1,6 +1,6 @@
 //package smells;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.Arrays;
 
 public class FruitBanditsWorldDistribution {
@@ -40,9 +40,10 @@ public class FruitBanditsWorldDistribution {
 
 		int fruit_world_index = ProbabilityUtils.sample_index(this.worlds_probabilities);
 		if(Flags.verbose) {
-		System.out.println("Fruit world index");
-		System.out.println(fruit_world_index);}
-		return this.fruit_bandits_worlds[fruit_world_index];
+			//System.out.println("Fruit world index");
+			//System.out.println(fruit_world_index);
+			}
+			return this.fruit_bandits_worlds[fruit_world_index];
 
 	}
 

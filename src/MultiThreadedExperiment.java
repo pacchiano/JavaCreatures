@@ -1,6 +1,5 @@
 //package smells;
 
-import java.util.Arrays;
 
 public class MultiThreadedExperiment extends Thread{
 
@@ -12,18 +11,21 @@ public class MultiThreadedExperiment extends Thread{
 	
 	int num_iterations;
 	double step_size;
+	int thread_index;
+	
 	
 	public MultiThreadedExperiment(int num_fruit_bandit_worlds, int num_fruit_types, double[] worlds_probabilities,
 			double[][] fruit_type_probabilities_matrix, double[][] poison_probabilities_matrix,
-			double stay_sick_probability, double es_std, int creature_horizon, double creature_learning_rate, int num_iterations, double step_size) {
+			double stay_sick_probability, double es_std, int creature_horizon, double creature_learning_rate, 
+			int num_iterations, double step_size, int thread_index) {
 		
 		this.experiment = new Experiment(num_fruit_bandit_worlds, num_fruit_types, worlds_probabilities,
 				fruit_type_probabilities_matrix, poison_probabilities_matrix,
-				stay_sick_probability, es_std, creature_horizon, creature_learning_rate);
+				stay_sick_probability, es_std, creature_horizon, creature_learning_rate, thread_index);
 		
 		this.num_iterations = num_iterations;
 		this.step_size = step_size;
-		
+		this.thread_index = thread_index;
 		
 	}
 	

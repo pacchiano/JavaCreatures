@@ -2,7 +2,7 @@
 
 public class Flags {
 
-	public static boolean verbose = false;
-	
+	public static boolean verbose = true;
+	public static int logging_frequency = 100;
 	
 }

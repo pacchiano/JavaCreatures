@@ -172,8 +172,10 @@ def plot_probabilities_results(plot_filename, plot_title, probabilities_matrix, 
 	for i in range(num_fruit_types):
 
 		label_poison = ""
-		for j in range(len(poison_probabilities_matrix)):
-			label_poison = "{} {}".format(label_poison, poison_probabilities_matrix[j][i])		
+		for j in range(len(poison_probabilities_matrix)-1):
+			label_poison = "{} - {}".format(label_poison, poison_probabilities_matrix[j][i])		
+		
+
 
 		plt.plot(timesteps, mean_probabilities[:,i], label = "Fruit {} - poison prob {}".format(i+1, label_poison) ,color = colors[i])
 		plt.fill_between(timesteps, mean_probabilities[:,i] - .5*std_probabilities[:,i], 
@@ -194,13 +196,16 @@ def plot_probabilities_results(plot_filename, plot_title, probabilities_matrix, 
 
 if __name__ == "__main__":
 	num_fruit_types = 3
-	num_iterations = 1000
-	creature_horizon = 1000
+	num_iterations = 10000
+	creature_horizon = 10000
 
-	for experiment_name in ["Scenario1","Scenario2","Scenario3","Scenario4","Scenario5" ]:
+	for experiment_name in ["MultiWorldScenarioReactive1", "MultiWorldScenarioAdaptive1"]:#, "Scenario1","Scenario2","Scenario3","Scenario4","Scenario5" ]:
 
 		results = load_files(num_fruit_types, experiment_name, creature_horizon, num_iterations)
 		#IPython.embed()
+
+		#IPython.embed();
+
 		reward_plot_filename, reward_plot_title = generate_reward_plot_filename_and_title(results)
 		
 
@@ -226,6 +231,20 @@ if __name__ == "__main__":
 		probabilities_evolver_plot_filename, probabilities_evolver_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "evolver" )
 		plot_probabilities_results(probabilities_evolver_plot_filename, probabilities_evolver_plot_title, 
 			probabilities_matrix_evolver, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = 100)
+
+
+		probabilities_difference_plot_filename, probabilities_difference_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "absolute-difference" )
+		probabilities_matrix_difference = np.abs(np.array(probabilities_matrix_evolver) - np.array(probabilities_matrix_creature))
+		plot_probabilities_results(probabilities_difference_plot_filename, probabilities_difference_plot_title, 
+			probabilities_matrix_difference, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = 100)
+
+
+		probabilities_difference_plot_filename, probabilities_difference_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "signed-difference" )
+		probabilities_matrix_difference = np.array(probabilities_matrix_evolver) - np.array(probabilities_matrix_creature)
+		plot_probabilities_results(probabilities_difference_plot_filename, probabilities_difference_plot_title, 
+			probabilities_matrix_difference, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = 100)
+
+
 
 
 		#IPython.embed()

@@ -6,9 +6,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -104,8 +101,8 @@ public class ExperimentManager {
     	
     	this.stay_sick_probability = .5;
     	this.es_std = .1;
-    	this.num_iterations = 50000;//10000;
-    	this.creature_horizon = 1000;
+    	this.num_iterations = 100000;//10000;
+    	this.creature_horizon = 10000;
     	this.step_size = .1;
     	this.creature_learning_rate = 0;
 
@@ -170,19 +167,18 @@ public class ExperimentManager {
 	    	this.poison_probabilities_matrix[0][0] = .9;
 	    	this.poison_probabilities_matrix[0][1] = .1;
 	    	this.poison_probabilities_matrix[0][2] = .9;
-	    	this.poison_probabilities_matrix[0][0] = .1;
-	    	this.poison_probabilities_matrix[0][1] = .1;
-	    	this.poison_probabilities_matrix[0][2] = .9;
-
+	    	this.poison_probabilities_matrix[1][0] = .1;
+	    	this.poison_probabilities_matrix[1][1] = .1;
+	    	this.poison_probabilities_matrix[1][2] = .9;
 	    	
-	    	this.stay_sick_probability = .9;
+	    	this.stay_sick_probability = 0;
 	    	this.creature_learning_rate = 0;
 
 	    	
 	    	
 		}		
 
-		else if (experiment_name == "MultiworldScenarioReactive2")
+		else if (experiment_name == "MultiworldScenarioAdaptive1")
 		{	    	
 			
 			
@@ -208,13 +204,13 @@ public class ExperimentManager {
 	    	this.poison_probabilities_matrix[0][0] = .9;
 	    	this.poison_probabilities_matrix[0][1] = .1;
 	    	this.poison_probabilities_matrix[0][2] = .9;
-	    	this.poison_probabilities_matrix[0][0] = .1;
-	    	this.poison_probabilities_matrix[0][1] = .1;
-	    	this.poison_probabilities_matrix[0][2] = .9;
+	    	this.poison_probabilities_matrix[1][0] = .1;
+	    	this.poison_probabilities_matrix[1][1] = .1;
+	    	this.poison_probabilities_matrix[1][2] = .9;
 
 	    	
-	    	this.stay_sick_probability = .9;
-	    	this.creature_learning_rate = 0.1;
+	    	this.stay_sick_probability = 0;
+	    	this.creature_learning_rate = 0.01;
 
 	    	
 	    	
@@ -241,12 +237,14 @@ public class ExperimentManager {
 	
 	
 	
-	public Experiment get_experiment(String experiment_name) throws Exception {
+	public Experiment get_experiment(String experiment_name, int exp_identifier) throws Exception {
 		this.set_experiment_params(experiment_name);		
 		
 
-		Experiment experiment = new Experiment(this.num_fruit_bandit_worlds, this.num_fruit_types, this.worlds_probabilities, this.fruit_type_probabilities_matrix, 
-    			this.poison_probabilities_matrix,  this.stay_sick_probability, this.es_std, this.creature_horizon, this.creature_learning_rate);
+		Experiment experiment = new Experiment(this.num_fruit_bandit_worlds, this.num_fruit_types, 
+				this.worlds_probabilities, this.fruit_type_probabilities_matrix, 
+    			this.poison_probabilities_matrix,  this.stay_sick_probability, 
+    			this.es_std, this.creature_horizon, this.creature_learning_rate, exp_identifier);
 		
 		
 		return experiment;
@@ -256,12 +254,12 @@ public class ExperimentManager {
 		
 	}
 	
-	public MultiThreadedExperiment get_multithreaded_experiment(String experiment_name) throws Exception {
+	public MultiThreadedExperiment get_multithreaded_experiment(String experiment_name, int thread_index) throws Exception {
 		this.set_experiment_params(experiment_name);		
 		
 
 		MultiThreadedExperiment experiment = new MultiThreadedExperiment(this.num_fruit_bandit_worlds, this.num_fruit_types, this.worlds_probabilities, this.fruit_type_probabilities_matrix, 
-    			this.poison_probabilities_matrix,  this.stay_sick_probability, this.es_std, this.creature_horizon, this.creature_learning_rate,this.num_iterations, this.step_size);
+    			this.poison_probabilities_matrix,  this.stay_sick_probability, this.es_std, this.creature_horizon, this.creature_learning_rate,this.num_iterations, this.step_size, thread_index);
 		
 		
 		return experiment;
@@ -282,36 +280,14 @@ public class ExperimentManager {
 		
 		
 		MultiThreadedExperiment[] experiments = new MultiThreadedExperiment[num_experiments];
-//		try {
-//		
-//			
-//		for(int i=0; i < this.num_experiments; i++) {
-//			experiments[i] = this.get_multithreaded_experiment(experiment_name);
-//		}
-//			
-//		ExecutorService es = Executors.newCachedThreadPool();
-//		for(int i=0;i<this.num_experiments;i++)
-//		    es.execute(experiments[i]);
-//		es.shutdown();
-//		
-//		boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
-//		System.out.println("Finished ");
-//		System.out.println(finished);
-//			
-//		
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		// all tasks have finished or the time has been reached.
 
 		
 		
 		for (int i = 0; i < num_experiments; i++) {
 
 			try {
-				experiments[i] = this.get_multithreaded_experiment(experiment_name);
-				experiments[i].run();
+				experiments[i] = this.get_multithreaded_experiment(experiment_name, i+1);
+				experiments[i].start();
 				
 				
 				
@@ -392,7 +368,7 @@ public class ExperimentManager {
 		for (int i = 0; i < num_experiments; i++) {
 
 			try {
-				Experiment experiment = this.get_experiment(experiment_name);
+				Experiment experiment = this.get_experiment(experiment_name, i+1);
 				
 
 				ExperimentResults exp_results = experiment.run_experiment(num_iterations, step_size);
@@ -491,29 +467,47 @@ public class ExperimentManager {
 	
 	
 	public static void main(String[] args) {
+		
+		int experiment_index = -1;
+		if (args.length > 0) {
+		    try {
+		        experiment_index = Integer.parseInt(args[0]);
+		        System.out.println(String.valueOf(experiment_index));
+		    } catch (NumberFormatException e) {
+		        System.err.println("Argument" + args[0] + " must be an integer.");
+		        System.exit(1);
+		    }
+		}
+		
+		
+		
 
-		String[] experiment_names = { "MultiworldScenarioReactive1", "MultiworldScenarioReactive2"};//, "Scenario1", "Scenario2", "Scenario3", "Scenario4", "Scenario5" };
+		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	, "Scenario1", 
+				"Scenario2", "Scenario3", "Scenario4", "Scenario5" };
 
 		for (int j = 0; j < experiment_names.length; j++) {
 
-			ExperimentManager exp_generator = new ExperimentManager();
+			ExperimentManager exp_manager = new ExperimentManager();
 			String experiment_name = experiment_names[j];
-			exp_generator.set_experiment_params(experiment_name);
+			exp_manager.set_experiment_params(experiment_name);
 
 
 			
 			String folder_name = "./results/";
-			String file_name_stub = exp_generator.get_experiment_filename_stub();
+			String file_name_stub = exp_manager.get_experiment_filename_stub();
 			//String file_location = "./results/" + file_name + ".txt";
 			
 			
-			//ExperimentManagerResults sweep_results = exp_generator.get_experiment_sweep_results();
+			
+			
+			
+			//ExperimentManagerResults sweep_results = exp_manager.get_experiment_sweep_results();
 
 			
-			ExperimentManagerResults sweep_results = exp_generator.get_experiment_sweep_results_multithreaded();
+			ExperimentManagerResults sweep_results = exp_manager.get_experiment_sweep_results_multithreaded();
 
 			
-			exp_generator.write_log_file(folder_name, file_name_stub, sweep_results);
+			exp_manager.write_log_file(folder_name, file_name_stub, sweep_results);
 			
 
 

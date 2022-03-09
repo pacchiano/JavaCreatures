@@ -24,6 +24,19 @@ public final class ProbabilityUtils {
 		
 	}
 	
+	public static double[] logits_to_probabilities(double[] logits) {
+		double[] probability_weights_tmp = new double[logits.length];
+		for(int i=0; i < logits.length; i++) {
+			probability_weights_tmp[i] = Math.exp(logits[i])/(1+  Math.exp(logits[i]));
+			
+		}
+		
+		return probability_weights_tmp;
+		
+	}
+
+	
+	
 	
 	public static int sample_bernoulli(double probability_param) {
 		double random_val = Math.random();

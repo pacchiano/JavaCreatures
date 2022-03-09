@@ -1,9 +1,10 @@
 //package smells;
 
+//import java.util.Arrays;
 import java.util.Arrays;
 import java.util.Random;
-import java.io.IOException;
-import java.io.FileWriter; // Import the FileWriter class
+//import java.io.IOException;
+//import java.io.FileWriter; // Import the FileWriter class
 
 class ExperimentResults {
 	double[] rewards;
@@ -47,12 +48,13 @@ public class Experiment {
 	double creature_learning_rate;
 
 	int num_fruit_bandit_worlds;
-
+	int exp_identifier;
+	
 	FruitBanditsWorldDistribution fruit_worlds_distribution;
 
 	public Experiment(int num_fruit_bandit_worlds, int num_fruit_types, double[] worlds_probabilities,
 			double[][] fruit_type_probabilities_matrix, double[][] poison_probabilities_matrix,
-			double stay_sick_probability, double es_std, int creature_horizon, double creature_learning_rate) {
+			double stay_sick_probability, double es_std, int creature_horizon, double creature_learning_rate, int exp_identifier) {
 
 		this.num_fruit_types = num_fruit_types;
 		this.fruit_type_probabilities_matrix = fruit_type_probabilities_matrix;
@@ -73,6 +75,7 @@ public class Experiment {
 			// double[] dimensions = {num_fruit_types, 2};
 			this.evolver = new ES(num_fruit_types, es_std);
 			this.creature_horizon = creature_horizon;
+			this.exp_identifier = exp_identifier;
 
 		} catch (Exception e) {
 			
@@ -85,10 +88,13 @@ public class Experiment {
 	private double evaluate_creature(double[] logits) {
 		/// Send advice to creature
 		this.creature.reset();
-		this.creature.set_logits(logits);
+		this.creature.set_logits(logits.clone());
 
 		FruitBanditsWorld fruitworld = this.fruit_worlds_distribution.get_fruit_world();
 
+		//System.out.println("Prob weights start of creature life");
+		//System.out.println(Arrays.toString(creature.get_probability_weights()));
+		
 		/// Run creature with this advice for a creature horizon time
 		for (int j = 0; j < this.creature_horizon; j++) {
 			int[] fruit_type_poison_info = fruitworld.get_fruit_type_poison_type();
@@ -121,25 +127,40 @@ public class Experiment {
 
 			//// Send the creature the logits
 
-			double reward_base = evaluate_creature(this.evolver.get_weights_vector());
+			
+			
+			double reward_base = this.evaluate_creature(this.evolver.get_weights_vector());
+			
+			
+			used_probabilities_creature[i] = this.creature.get_probability_weights();
+			//System.out.println("Used probs creature");
+			//System.out.println(Arrays.toString(used_probabilities_creature[i]));
+			
+			used_probabilities_evolver[i] = ProbabilityUtils.logits_to_probabilities(this.evolver.get_weights_vector());
+			//System.out.println("Used probs evolver");
+			//System.out.println(Arrays.toString(used_probabilities_evolver[i]));
 
+
+			
+			
 			double[] perturbation = this.evolver.get_sample_perturbation();
 			double[] perturbed_logits_vector = this.evolver.get_perturbed_datapoint(this.evolver.get_weights_vector(),
 					perturbation);
 
 			double reward_perturbed = evaluate_creature(perturbed_logits_vector);
 			this.evolver.update_statistics_double_sensing(perturbation, reward_perturbed, reward_base, step_size);
-			if(Flags.verbose) {
-			System.out.println("Creature probabilities");
-			System.out.println(Arrays.toString(this.creature.get_probability_weights()));
-			System.out.println("Sample Reward");
-			System.out.println(reward_base);
-			System.out.println("Weights Vector");
-			System.out.println(Arrays.toString(this.evolver.get_weights_vector()));
+			if(Flags.verbose && i % Flags.logging_frequency == 0) {
+				System.out.println("Experiment " + String.valueOf(this.exp_identifier) + " iteration " + String.valueOf(i));
+				
+				//System.out.println("Creature probabilities");
+				//System.out.println(Arrays.toString(this.creature.get_probability_weights()));
+				//System.out.println("Sample Reward");
+				//System.out.println(reward_base);
+				//System.out.println("Weights Vector");
+				//System.out.println(Arrays.toString(this.evolver.get_weights_vector()));
 			}
 			rewards[i] = reward_base;
-			used_probabilities_creature[i] = this.creature.get_probability_weights();
-			used_probabilities_evolver[i] = this.creature.logits_to_probabilities(this.evolver.get_weights_vector());
+			//used_probabilities_evolver[i] = this.creature.logits_to_probabilities(this.evolver.get_weights_vector());
 
 		}
 
