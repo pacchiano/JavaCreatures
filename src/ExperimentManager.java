@@ -99,10 +99,10 @@ public class ExperimentManager {
     	this.poison_probabilities_matrix[0][2] = .2;
     	
     	
-    	this.stay_sick_probability = .5;
+    	this.stay_sick_probability = 0;
     	this.es_std = .1;
     	this.num_iterations = 10000;//10000;
-    	this.creature_horizon = 10000;
+    	this.creature_horizon = 1000;
     	this.step_size = .1;
     	this.creature_learning_rate = 0;
 
@@ -126,7 +126,7 @@ public class ExperimentManager {
 		else if (experiment_name == "Scenario4") {
 	    	
 	    	this.poison_probabilities_matrix[0][0] = 1;	    	
-	    	this.stay_sick_probability = .9;
+	    	this.stay_sick_probability = 0;
 	    	this.creature_learning_rate = .01;
 
 			
@@ -135,7 +135,7 @@ public class ExperimentManager {
 		else if (experiment_name == "Scenario5")
 		{	    	
 	    	this.poison_probabilities_matrix[0][0] = 1;	
-	    	this.stay_sick_probability = .9;
+	    	this.stay_sick_probability = 0;
 	    	this.creature_learning_rate = 0;
 	
 		}		
