@@ -39,16 +39,18 @@ class ZipFile {
 class ExperimentManagerResults{
 	
 	double[][] rewards_matrix ;
+	int[][] fruit_world_indices_matrix;
 	double[][][] used_probabilities_creature_tensor;
 	double[][][] used_probabilities_evolver_tensor ;
 
 	
-	public ExperimentManagerResults(double[][] rewards_matrix,  double[][][] used_probabilities_creature_tensor, double[][][] used_probabilities_evolver_tensor) {
+	public ExperimentManagerResults(double[][] rewards_matrix,  double[][][] used_probabilities_creature_tensor, 
+			double[][][] used_probabilities_evolver_tensor, int[][] fruit_world_indices_matrix) {
 		
 		this.rewards_matrix  = rewards_matrix;
 		this.used_probabilities_creature_tensor = used_probabilities_creature_tensor;
 		this.used_probabilities_evolver_tensor = used_probabilities_evolver_tensor;
-		
+		this.fruit_world_indices_matrix = fruit_world_indices_matrix;
 		
 	}
 	
@@ -71,7 +73,7 @@ public class ExperimentManager {
 	double es_std ;
 	int num_iterations ;
 	int creature_horizon ;
-	double step_size ;
+	double es_step_size ;
 	double creature_learning_rate ;
 
 	int num_fruit_bandit_worlds;
@@ -95,50 +97,113 @@ public class ExperimentManager {
     	
     	this.poison_probabilities_matrix = new double[this.num_fruit_bandit_worlds][this.num_fruit_types];
     	this.poison_probabilities_matrix[0][0] = .9;
-    	this.poison_probabilities_matrix[0][1] = .1;
-    	this.poison_probabilities_matrix[0][2] = .2;
+    	this.poison_probabilities_matrix[0][1] = .2;
+    	this.poison_probabilities_matrix[0][2] = .3;
     	
     	
     	this.stay_sick_probability = 0;
     	this.es_std = .1;
     	this.num_iterations = 10000;//10000;
-    	this.creature_horizon = 100;
-    	this.step_size = .1;
+    	this.creature_horizon = 1000;
+    	this.es_step_size = .1;
     	this.creature_learning_rate = 0;
 
-		if(experiment_name == "Scenario1") {
-	    	this.creature_learning_rate = 0;
-			
+    	
+    	
+    	if(experiment_name ==  "Scatter-ESstepSizep1-Reactive") {
+    		
+        	this.num_iterations = 10000;//10000;
+        	this.creature_horizon = 100;
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0;
+    		   		
+    	}
+    	
 
-		}
-		else if (experiment_name == "Scenario2") {
-	    	this.creature_learning_rate = .1;
+    	if(experiment_name ==  "Scatter-ESstepSizep01-Reactive") {
+    		
+        	this.num_iterations = 10000;//10000;
+        	this.creature_horizon = 100;
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0;
+    		   		
+    	}
 
-			
-		}
-		
-		else if (experiment_name == "Scenario3") {
-	    	this.creature_learning_rate = .01;
+    	
+    	if(experiment_name ==  "Scatter-ESstepSizep001-Reactive") {
+    		
+        	this.num_iterations = 10000;//10000;
+        	this.creature_horizon = 100;
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0;
+    		   		
+    	}
+    	
+    	
+    	if(experiment_name ==  "Scatter-ESstepSizep1-AdaptiveH100") {
+    		
+        	this.num_iterations = 10000;//10000;
+        	this.creature_horizon = 100;
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0.1;
+    		   		
+    	}
+    	
 
-			
-		}
-		/// Poison prob = 1 for one fruit.
-		else if (experiment_name == "Scenario4") {
-	    	
-	    	this.poison_probabilities_matrix[0][0] = 1;	    	
-	    	this.stay_sick_probability = 0;
-	    	this.creature_learning_rate = .01;
+    	if(experiment_name ==  "Scatter-ESstepSizep01-AdaptiveH100") {
+    		
+        	this.num_iterations = 10000;//10000;
+        	this.creature_horizon = 100;
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0.1;
+    		   		
+    	}
 
-			
-		}
-		/// Poison prob = 1 for one fruit.
-		else if (experiment_name == "Scenario5")
-		{	    	
-	    	this.poison_probabilities_matrix[0][0] = 1;	
-	    	this.stay_sick_probability = 0;
-	    	this.creature_learning_rate = 0;
-	
-		}		
+    	
+    	if(experiment_name ==  "Scatter-ESstepSizep001-AdaoptiveH100") {
+    		
+        	this.num_iterations = 10000;//10000;
+        	this.creature_horizon = 100;
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0.1;
+    		   		
+    	}
+
+    	
+    	
+    	
+    	if(experiment_name ==  "Scatter-ESstepSizep1-AdaptiveH1000") {
+    		
+        	this.num_iterations = 10000;//10000;
+        	this.creature_horizon = 1000;
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0.1;
+    		   		
+    	}
+    	
+
+    	if(experiment_name ==  "Scatter-ESstepSizep01-AdaptiveH1000") {
+    		
+        	this.num_iterations = 10000;//10000;
+        	this.creature_horizon = 1000;
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0.1;
+    		   		
+    	}
+
+    	
+    	if(experiment_name ==  "Scatter-ESstepSizep001-AdaoptiveH1000") {
+    		
+        	this.num_iterations = 10000;//10000;
+        	this.creature_horizon = 1000;
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0.1;
+    		   		
+    	}
+
+    	
+    	
+    	
 
 		/// Poison prob = 1 for one fruit.
 		else if (experiment_name == "MultiworldScenarioReactive1")
@@ -210,7 +275,7 @@ public class ExperimentManager {
 
 	    	
 	    	this.stay_sick_probability = 0;
-	    	this.creature_learning_rate = 0.01;
+	    	this.creature_learning_rate = 0.1;
 
 	    	
 	    	
@@ -259,7 +324,7 @@ public class ExperimentManager {
 		
 
 		MultiThreadedExperiment experiment = new MultiThreadedExperiment(this.num_fruit_bandit_worlds, this.num_fruit_types, this.worlds_probabilities, this.fruit_type_probabilities_matrix, 
-    			this.poison_probabilities_matrix,  this.stay_sick_probability, this.es_std, this.creature_horizon, this.creature_learning_rate,this.num_iterations, this.step_size, thread_index);
+    			this.poison_probabilities_matrix,  this.stay_sick_probability, this.es_std, this.creature_horizon, this.creature_learning_rate,this.num_iterations, this.es_step_size, thread_index);
 		
 		
 		return experiment;
@@ -275,6 +340,7 @@ public class ExperimentManager {
 	
 	public ExperimentManagerResults get_experiment_sweep_results_multithreaded() {
 		double[][] rewards_matrix = new double[num_experiments][num_iterations];
+		int[][] fruit_world_indices_matrix = new int[num_experiments][num_iterations];
 		double[][][] used_probabilities_creature_tensor = new double[num_experiments][num_iterations][num_fruit_types];
 		double[][][] used_probabilities_evolver_tensor = new double[num_experiments][num_iterations][num_fruit_types];
 		
@@ -332,9 +398,10 @@ public class ExperimentManager {
 			
 	
 				rewards_matrix[i] = exp_results.get_rewards();
+				fruit_world_indices_matrix[i] = exp_results.get_fruit_world_indices();
 				used_probabilities_creature_tensor[i] = exp_results.get_used_probabilities_creature();
 				used_probabilities_evolver_tensor[i] = exp_results.get_used_probabilities_evolver();
-
+				
 	
 		
 		
@@ -343,7 +410,7 @@ public class ExperimentManager {
 
 		
 		
-		ExperimentManagerResults sweep_results = new ExperimentManagerResults(rewards_matrix, used_probabilities_creature_tensor, used_probabilities_evolver_tensor);
+		ExperimentManagerResults sweep_results = new ExperimentManagerResults(rewards_matrix, used_probabilities_creature_tensor, used_probabilities_evolver_tensor, fruit_world_indices_matrix);
 				
 		return sweep_results;
 
@@ -362,6 +429,7 @@ public class ExperimentManager {
 		
 		
 		double[][] rewards_matrix = new double[num_experiments][num_iterations];
+		int[][] fruit_world_indices_matrix = new int[num_experiments][num_iterations];
 		double[][][] used_probabilities_creature_tensor = new double[num_experiments][num_iterations][num_fruit_types];
 		double[][][] used_probabilities_evolver_tensor = new double[num_experiments][num_iterations][num_fruit_types];
 		
@@ -371,12 +439,18 @@ public class ExperimentManager {
 				Experiment experiment = this.get_experiment(experiment_name, i+1);
 				
 
-				ExperimentResults exp_results = experiment.run_experiment(num_iterations, step_size);
+				ExperimentResults exp_results = experiment.run_experiment(num_iterations, es_step_size);
 				
 
 				rewards_matrix[i] = exp_results.get_rewards();
+				fruit_world_indices_matrix[i] = exp_results.get_fruit_world_indices();
+				
 				used_probabilities_creature_tensor[i] = exp_results.get_used_probabilities_creature();
 				used_probabilities_evolver_tensor[i] = exp_results.get_used_probabilities_evolver();
+				
+				
+				
+				
 
 			} catch (Exception e) {
 				
@@ -387,8 +461,11 @@ public class ExperimentManager {
 		}
 	
 		
-		ExperimentManagerResults sweep_results = new ExperimentManagerResults(rewards_matrix, used_probabilities_creature_tensor, used_probabilities_evolver_tensor);
-				
+		ExperimentManagerResults sweep_results = new ExperimentManagerResults(rewards_matrix, used_probabilities_creature_tensor, used_probabilities_evolver_tensor, fruit_world_indices_matrix);
+		
+		
+		
+		
 		return sweep_results;
 		
 	}
@@ -431,9 +508,12 @@ public class ExperimentManager {
 			myWriter.write(String.valueOf(this.es_std));
 			myWriter.write("\n");
 
-			myWriter.write(String.valueOf(this.step_size));
+			myWriter.write(String.valueOf(this.es_step_size));
 			myWriter.write("\n");
 
+			myWriter.write(String.valueOf(this.creature_learning_rate));
+			myWriter.write("\n");			
+			
 			myWriter.write(Arrays.deepToString(sweep_results.rewards_matrix));
 			myWriter.write("\n");
 
@@ -443,6 +523,11 @@ public class ExperimentManager {
 			myWriter.write(Arrays.deepToString(sweep_results.used_probabilities_evolver_tensor));
 			myWriter.write("\n");
 
+			myWriter.write(Arrays.deepToString(sweep_results.fruit_world_indices_matrix));
+			myWriter.write("\n");
+			
+			
+			
 			myWriter.close();
 			System.out.println("Successfully wrote to the file.");
 	
@@ -482,9 +567,16 @@ public class ExperimentManager {
 		
 		
 
-		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	, "Scenario1", 
-				"Scenario2", "Scenario3", "Scenario4", "Scenario5" };
+		//String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	, "Scenario1", 
+		//		"Scenario2", "Scenario3", "Scenario4", "Scenario5" };
 
+		//String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	 };
+		String[] experiment_names = { "Scatter-ESstepSizep1-Reactive", 	"Scatter-ESstepSizep01-Reactive", "Scatter-ESstepSizep001-Reactive", "Scatter-ESstepSizep1-AdaptiveH100", 
+				"Scatter-ESstepSizep01-AdaptiveH100",  "Scatter-ESstepSizep001-AdaoptiveH100",  "Scatter-ESstepSizep1-AdaptiveH1000", 
+				"Scatter-ESstepSizep01-AdaptiveH1000",  "Scatter-ESstepSizep001-AdaoptiveH1000"};
+	
+		
+		
 		for (int j = 0; j < experiment_names.length; j++) {
 
 			ExperimentManager exp_manager = new ExperimentManager();

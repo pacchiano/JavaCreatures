@@ -3,6 +3,29 @@
 //import java.io.IOException;
 import java.util.Arrays;
 
+
+class FruitBanditsWorldInfo {         
+      FruitBanditsWorld fruit_bandit_world;
+      int world_index;
+
+    public FruitBanditsWorldInfo(FruitBanditsWorld fruit_bandit_world, int world_index) {         
+        this.fruit_bandit_world= fruit_bandit_world;
+        this.world_index= world_index;
+     }
+    
+    public FruitBanditsWorld get_fruit_bandit_world() {
+    	return this.fruit_bandit_world;
+    	
+    }
+    
+    public int get_world_index() {
+    	return this.world_index;
+    }
+    
+    
+ }
+
+
 public class FruitBanditsWorldDistribution {
 
 	int num_fruit_bandit_worlds;
@@ -36,14 +59,19 @@ public class FruitBanditsWorldDistribution {
 
 	}
 
-	public FruitBanditsWorld get_fruit_world() {
+	public FruitBanditsWorldInfo get_fruit_world() {
 
 		int fruit_world_index = ProbabilityUtils.sample_index(this.worlds_probabilities);
 		if(Flags.verbose) {
 			//System.out.println("Fruit world index");
 			//System.out.println(fruit_world_index);
 			}
-			return this.fruit_bandits_worlds[fruit_world_index];
+		
+		
+			FruitBanditsWorld sample_fruit_world = this.fruit_bandits_worlds[fruit_world_index];
+			FruitBanditsWorldInfo fruit_world_info = new FruitBanditsWorldInfo( sample_fruit_world, fruit_world_index  ); 
+			
+			return fruit_world_info;
 
 	}
 
@@ -62,8 +90,8 @@ public class FruitBanditsWorldDistribution {
 					num_fruit_bandit_worlds, worlds_probabilities, num_fruit_types, fruit_type_probabilities_matrix,
 					poison_probabilities_matrix);
 			for (int i = 0; i < num_steps; i++) {
-				FruitBanditsWorld fruitworld = fruit_worlds_distribution.get_fruit_world();
-				
+				FruitBanditsWorldInfo fruitworld_info = fruit_worlds_distribution.get_fruit_world();
+				FruitBanditsWorld fruitworld = fruitworld_info.get_fruit_bandit_world();
 				
 				int[] result = fruitworld.get_fruit_type_poison_type();
 

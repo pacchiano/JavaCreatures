@@ -65,7 +65,7 @@ def load_files(num_fruit_types, experiment_name, creature_horizon, num_iteration
 	f = open(txt_filename, "r")
 	results = dict([])
 
-	
+
 	lines = f.readlines()
 	num_experiments = int(lines[0].replace("\n", ""))
 	results["num_experiments"] = num_experiments
@@ -95,24 +95,32 @@ def load_files(num_fruit_types, experiment_name, creature_horizon, num_iteration
 	es_std = float(lines[8].replace("\n", ""))
 	results["es_std"] = es_std
 
-	step_size = float(lines[9].replace("\n", ""))
-	results["step_size"] = step_size
+	es_step_size = float(lines[9].replace("\n", ""))
+	results["es_step_size"] = es_step_size
 
-	reward_results = ast.literal_eval(lines[10].replace("\n", ""))
+	creature_learning_rate = float(lines[10].replace("\n", ""))
+	results["creature_learning_rate"] = creature_learning_rate
+
+
+	reward_results = ast.literal_eval(lines[11].replace("\n", ""))
 	results["reward_results"] = reward_results
 
 
-	used_probabilities_creature = ast.literal_eval(lines[11].replace("\n", ""))
+	used_probabilities_creature = ast.literal_eval(lines[12].replace("\n", ""))
 	results["used_probabilities_creature"] = used_probabilities_creature
 
 
-	used_probabilities_evolver = ast.literal_eval(lines[12].replace("\n", ""))
+	used_probabilities_evolver = ast.literal_eval(lines[13].replace("\n", ""))
 	results["used_probabilities_evolver"] = used_probabilities_evolver
 
+	fruit_world_indices_matrix = ast.literal_eval(lines[14].replace("\n", ""))
+	results["fruit_world_indices_matrix"] = fruit_world_indices_matrix
 
 
 	results["experiment_name"] = experiment_name
 
+
+	#IPython.embed()
 
 	os.remove(txt_filename)
 
@@ -159,10 +167,40 @@ def plot_reward_results(plot_filename, plot_title, results_matrix, num_iteration
 
 
 
+def plot_probabilities_results(plot_filename, plot_title, probabilities_matrix, fruit_world_indices_matrix, num_iterations, 
+	num_fruit_types, poison_probabilities_matrix, averaging_window = 1, focus_fruit_world_index = None):
 
-def plot_probabilities_results(plot_filename, plot_title, probabilities_matrix, num_iterations, 
-	num_fruit_types, poison_probabilities_matrix, averaging_window = 1):
-	mean_probabilities, std_probabilities = process_probabilities_results(probabilities_matrix, averaging_window = averaging_window)
+	### Compute the interpolation.
+	probabilities_matrix_numpy = np.array(probabilities_matrix)
+	fruit_world_indices_matrix_numpy = np.array(fruit_world_indices_matrix)
+	interpolated_probabilities_matrix_numpy = np.zeros(probabilities_matrix_numpy.shape)
+
+	(num_experiments, _, _) = probabilities_matrix_numpy.shape
+
+
+	if focus_fruit_world_index == None:
+		interpolated_probabilities_matrix_numpy = probabilities_matrix_numpy
+	
+	else:
+
+		for i in range(num_experiments):
+			fruit_world_indices_experiment_list = fruit_world_indices_matrix_numpy[i,:]
+			mask = fruit_world_indices_experiment_list == focus_fruit_world_index
+			indices_mask = np.arange(num_iterations)[mask]
+			
+
+			# #fruit_world_indices_experiment_list = fruit_world_indices_matrix[i]
+			# focus_index_list = [index for (index, fruit_world_index) in zip(range(num_iterations), fruit_world_indices_experiment_list ) if fruit_world_index == focus_fruit_world_index]
+			# IPython.embed()
+			for fruit_type in range(num_fruit_types):
+				focus_probs = probabilities_matrix_numpy[i, :, fruit_type][mask]
+
+				interpolated_probabilities_matrix_numpy[i, :, fruit_type] = np.interp(np.arange(num_iterations),  indices_mask, focus_probs  )
+
+	
+	
+
+	mean_probabilities, std_probabilities = process_probabilities_results(interpolated_probabilities_matrix_numpy, averaging_window = averaging_window)
 	timesteps = (np.arange(int(num_iterations/averaging_window) ) + 1)*averaging_window
 	
 	#IPython.embed()
@@ -171,21 +209,29 @@ def plot_probabilities_results(plot_filename, plot_title, probabilities_matrix, 
 
 	for i in range(num_fruit_types):
 
-		label_poison = ""
-		for j in range(len(poison_probabilities_matrix)-1):
-			label_poison = "{} - {}".format(label_poison, poison_probabilities_matrix[j][i])		
-		
 
+
+		if focus_fruit_world_index == None:
+
+			label_poison = ""	
+			for j in range(len(poison_probabilities_matrix)):
+				label_poison = "{} - {}".format(label_poison, poison_probabilities_matrix[j][i])		
+
+		else:
+			label_poison = " - {}".format(poison_probabilities_matrix[focus_fruit_world_index][i])
 
 		plt.plot(timesteps, mean_probabilities[:,i], label = "Fruit {} - poison prob {}".format(i+1, label_poison) ,color = colors[i])
 		plt.fill_between(timesteps, mean_probabilities[:,i] - .5*std_probabilities[:,i], 
 			mean_probabilities[:,i] + .5*std_probabilities[:,i], color = colors[i], alpha = .2)
 	
-	plt.legend(bbox_to_anchor=(1.05, 1), fontsize = 8)
-	plt.tight_layout()
 
-	#plt.legend(loc = "lower right")
-	plt.title(plot_title)
+	#IPython.embed()
+
+	#plt.legend(bbox_to_anchor=(1.05, 1), fontsize = 6)
+	#plt.tight_layout()
+
+	plt.legend(loc = "lower left", fontsize = 8)
+	plt.title(plot_title, fontsize = 10)
 
 	plt.xscale('log')
 
@@ -199,14 +245,13 @@ if __name__ == "__main__":
 	num_iterations = 10000
 	creature_horizon = 1000
 
-	averaging_window = 10
+	averaging_window = 1
 
-	for experiment_name in ["MultiWorldScenarioReactive1", "MultiWorldScenarioAdaptive1"]:#, "Scenario1","Scenario2","Scenario3","Scenario4","Scenario5" ]:
+	focus_fruit_world_index = 0
+
+	for experiment_name in ["MultiWorldScenarioAdaptive1"]: #["MultiWorldScenarioReactive1", "MultiWorldScenarioAdaptive1", "Scenario1","Scenario2","Scenario3","Scenario4","Scenario5" ]:
 
 		results = load_files(num_fruit_types, experiment_name, creature_horizon, num_iterations)
-		#IPython.embed()
-
-		#IPython.embed();
 
 		reward_plot_filename, reward_plot_title = generate_reward_plot_filename_and_title(results)
 		
@@ -219,37 +264,32 @@ if __name__ == "__main__":
 		plot_reward_results(reward_plot_filename, reward_plot_title, results_matrix, num_iterations, averaging_window = averaging_window)
 
 		probabilities_matrix_creature = results["used_probabilities_creature"]
-
 		poison_probabilities_matrix = results["poison_probabilities_matrix"]
+		fruit_world_indices_matrix = results["fruit_world_indices_matrix"]
 
-		probabilities_creature_plot_filename, probabilities_creature_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "creature" )
+		probabilities_creature_plot_filename, probabilities_creature_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "creature-world{}".format(focus_fruit_world_index) )
 		plot_probabilities_results(probabilities_creature_plot_filename, probabilities_creature_plot_title, 
-			probabilities_matrix_creature, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
+			probabilities_matrix_creature, fruit_world_indices_matrix, num_iterations, num_fruit_types, poison_probabilities_matrix, 
+			averaging_window = averaging_window, focus_fruit_world_index = focus_fruit_world_index)
 
 
 		probabilities_matrix_evolver = results["used_probabilities_evolver"]
 
-
 		probabilities_evolver_plot_filename, probabilities_evolver_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "evolver" )
 		plot_probabilities_results(probabilities_evolver_plot_filename, probabilities_evolver_plot_title, 
-			probabilities_matrix_evolver, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
-
+			probabilities_matrix_evolver, fruit_world_indices_matrix, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
 
 		probabilities_difference_plot_filename, probabilities_difference_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "absolute-difference" )
 		probabilities_matrix_difference = np.abs(np.array(probabilities_matrix_evolver) - np.array(probabilities_matrix_creature))
 		plot_probabilities_results(probabilities_difference_plot_filename, probabilities_difference_plot_title, 
-			probabilities_matrix_difference, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
+			probabilities_matrix_difference, fruit_world_indices_matrix,  num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
 
 
 		probabilities_difference_plot_filename, probabilities_difference_plot_title = generate_probabilities_plot_filename_and_title(results, suffix = "signed-difference" )
 		probabilities_matrix_difference = np.array(probabilities_matrix_evolver) - np.array(probabilities_matrix_creature)
 		plot_probabilities_results(probabilities_difference_plot_filename, probabilities_difference_plot_title, 
-			probabilities_matrix_difference, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
+			probabilities_matrix_difference, fruit_world_indices_matrix, num_iterations, num_fruit_types, poison_probabilities_matrix, averaging_window = averaging_window)
 
-
-
-
-		#IPython.embed()
 
 
 

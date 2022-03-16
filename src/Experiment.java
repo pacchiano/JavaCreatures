@@ -1,21 +1,25 @@
 //package smells;
 
 //import java.util.Arrays;
-import java.util.Arrays;
 import java.util.Random;
 //import java.io.IOException;
 //import java.io.FileWriter; // Import the FileWriter class
 
 class ExperimentResults {
 	double[] rewards;
+	int[] fruit_world_indices;
+	
 	double[][] used_probabilities_creature;
 	double[][] used_probabilities_evolver;
 
+	
+	
 	public ExperimentResults(double[] rewards, double[][] used_probabilities_creature,
-			double[][] used_probabilities_evolver) {
+			double[][] used_probabilities_evolver, int[] fruit_world_indices) {
 		this.rewards = rewards;
 		this.used_probabilities_creature = used_probabilities_creature;
 		this.used_probabilities_evolver = used_probabilities_evolver;
+		this.fruit_world_indices = fruit_world_indices;
 	}
 
 	public double[] get_rewards() {
@@ -30,7 +34,13 @@ class ExperimentResults {
 		return this.used_probabilities_evolver;
 	}
 
+	public int[] get_fruit_world_indices() {
+		return this.fruit_world_indices;
+	}
+	
 }
+
+
 
 public class Experiment {
 
@@ -85,13 +95,19 @@ public class Experiment {
 
 	}
 
-	private double evaluate_creature(double[] logits) {
+	private PairIntegerDouble evaluate_creature(double[] logits) {
 		/// Send advice to creature
 		this.creature.reset();
 		this.creature.set_logits(logits.clone());
 
-		FruitBanditsWorld fruitworld = this.fruit_worlds_distribution.get_fruit_world();
+		//FruitBanditsWorld fruitworld = this.fruit_worlds_distribution.get_fruit_world();
 
+		FruitBanditsWorldInfo fruit_world_info = this.fruit_worlds_distribution.get_fruit_world();
+		FruitBanditsWorld fruitworld = fruit_world_info.get_fruit_bandit_world();
+		int fruit_world_index  = fruit_world_info.get_world_index();
+		
+		
+		
 		//System.out.println("Prob weights start of creature life");
 		//System.out.println(Arrays.toString(creature.get_probability_weights()));
 		
@@ -104,7 +120,9 @@ public class Experiment {
 
 		}
 
-		return this.creature.get_reward_collected() / this.creature_horizon;
+		double reward_horizon_normalized = this.creature.get_reward_collected() / this.creature_horizon;
+		
+		return new PairIntegerDouble(fruit_world_index, reward_horizon_normalized);
 	}
 
 		
@@ -114,6 +132,8 @@ public class Experiment {
 		//// Initialize weights_vector
 
 		double[] rewards = new double[num_iterations];
+		int[] fruit_world_indices = new int[num_iterations];
+
 		double[][] used_probabilities_creature = new double[num_iterations][num_fruit_types];
 		double[][] used_probabilities_evolver = new double[num_iterations][num_fruit_types];
 
@@ -127,9 +147,11 @@ public class Experiment {
 
 			//// Send the creature the logits
 
+			PairIntegerDouble fruit_world_index_and_reward = this.evaluate_creature(this.evolver.get_weights_vector());
 			
+			double reward_base = fruit_world_index_and_reward.get_my_double();
+			int fruit_world_index = fruit_world_index_and_reward.get_my_integer();
 			
-			double reward_base = this.evaluate_creature(this.evolver.get_weights_vector());
 			
 			
 			used_probabilities_creature[i] = this.creature.get_probability_weights();
@@ -147,7 +169,11 @@ public class Experiment {
 			double[] perturbed_logits_vector = this.evolver.get_perturbed_datapoint(this.evolver.get_weights_vector(),
 					perturbation);
 
-			double reward_perturbed = evaluate_creature(perturbed_logits_vector);
+			
+			PairIntegerDouble fruit_world_index_and_reward_perturbed =  evaluate_creature(perturbed_logits_vector);
+			double reward_perturbed = fruit_world_index_and_reward_perturbed.get_my_double();
+			
+			
 			this.evolver.update_statistics_double_sensing(perturbation, reward_perturbed, reward_base, step_size);
 			if(Flags.verbose && i % Flags.logging_frequency == 0) {
 				System.out.println("Experiment " + String.valueOf(this.exp_identifier) + " iteration " + String.valueOf(i));
@@ -160,12 +186,13 @@ public class Experiment {
 				//System.out.println(Arrays.toString(this.evolver.get_weights_vector()));
 			}
 			rewards[i] = reward_base;
+			fruit_world_indices[i] = fruit_world_index;
 			//used_probabilities_evolver[i] = this.creature.logits_to_probabilities(this.evolver.get_weights_vector());
 
 		}
 
 		ExperimentResults exp_results = new ExperimentResults(rewards, used_probabilities_creature,
-				used_probabilities_evolver);
+				used_probabilities_evolver, fruit_world_indices);
 
 		return exp_results;
 	}
