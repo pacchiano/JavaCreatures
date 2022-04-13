@@ -42,7 +42,7 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
     	this.worlds_probabilities[0]=1;
     	
     	this.es_std = .1;
-    	this.num_iterations = 10000;
+    	this.num_iterations = 100000;
     	this.es_step_size = .1;
     	this.creature_learning_rate = 0.01;
 
