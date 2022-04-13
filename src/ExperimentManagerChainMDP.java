@@ -42,7 +42,7 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
     	this.worlds_probabilities[0]=1;
     	
     	this.es_std = .1;
-    	this.num_iterations = 10;
+    	this.num_iterations = 10000;
     	this.es_step_size = .1;
     	this.creature_learning_rate = 0.01;
 
@@ -51,7 +51,7 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
     	
     	if(experiment_name ==  "ChainMDPBasic1") {
     		this.num_worlds = 1;
-        	this.creature_horizon = 1000;
+        	this.creature_horizon = 10000;
         	this.day_steps = 100;
         		
         	
