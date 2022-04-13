@@ -27,9 +27,9 @@ public class CreatureTabularQ extends Creature{
 		int ultimate_reward = state[1];
 		
 
-		System.out.println("Current Location");
-		
-		System.out.println(current_location);
+//		System.out.println("Current Location");
+//		
+//		System.out.println(current_location);
 		
 		
 		
@@ -43,12 +43,12 @@ public class CreatureTabularQ extends Creature{
 		PairIntegerDouble action_reward = new PairIntegerDouble(max_index_max_q.get_my_integer(), proximate_reward);
 
 		
-		System.out.println("Ultimate Reward");
-		
-		System.out.println(ultimate_reward);
-		System.out.println("Proximate Reward");
-		
-		System.out.println(proximate_reward);
+//		System.out.println("Ultimate Reward");
+//		
+//		System.out.println(ultimate_reward);
+//		System.out.println("Proximate Reward");
+//		
+//		System.out.println(proximate_reward);
 
 		
 		
@@ -131,7 +131,7 @@ public class CreatureTabularQ extends Creature{
 	
 	/// Sets the proximate reward.
 	public void process_evolver_advice(double[] evolver_advice) {
-		System.out.println("alskdfmasdlfkamsdflkamsdflkamsdflkm");
+		//System.out.println("alskdfmasdlfkamsdflkamsdflkamsdflkm");
 		
 		this.proximate_reward_matrix = evolver_advice;
 				
