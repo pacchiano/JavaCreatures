@@ -143,6 +143,8 @@ public class CreatureTabularQ extends Creature{
 		this.opt_actions = new double[this.num_states];
 		Arrays.fill(opt_actions, -2);
 		
+		this.ultimate_reward_collected = 0;
+		
 		
 	}
 	

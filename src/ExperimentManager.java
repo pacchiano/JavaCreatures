@@ -5,7 +5,6 @@ public abstract class ExperimentManager {
 	
 	int num_experiments;
 	int num_iterations;
-	//int num_fruit_types;
 	
 	int creature_info_vector_size;
 	int evolver_info_vector_size;

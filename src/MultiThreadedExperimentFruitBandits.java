@@ -6,15 +6,6 @@
 public class MultiThreadedExperimentFruitBandits extends MultiThreadedExperiment{
 
 	
-	//ExperimentFruitBandits experiment;
-	//ExperimentResults exp_results;
-	
-	
-//	int num_iterations;
-//	double step_size;
-//	int thread_index;
-	
-	
 	public MultiThreadedExperimentFruitBandits(int num_fruit_bandit_worlds, int num_fruit_types, double[] worlds_probabilities,
 			double[][] fruit_type_probabilities_matrix, double[][] poison_probabilities_matrix,
 			double stay_sick_probability, double es_std, int creature_horizon, double creature_learning_rate, 
