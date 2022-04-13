@@ -102,7 +102,7 @@ def load_files_mdp_chain(num_fruit_types, experiment_name, creature_horizon, num
 
 if __name__ == "__main__":
 	chain_length = 3
-	num_iterations = 10000
+	num_iterations = 20000
 	creature_horizon = 10000
 
 	averaging_window = 1
