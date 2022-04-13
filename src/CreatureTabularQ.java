@@ -26,6 +26,12 @@ public class CreatureTabularQ extends Creature{
 		int current_location = state[0];
 		int ultimate_reward = state[1];
 		
+
+		System.out.println("Current Location");
+		
+		System.out.println(current_location);
+		
+		
 		
 		PairIntegerDouble max_index_max_q = this.get_argmax_q(current_location);
 		
@@ -36,6 +42,15 @@ public class CreatureTabularQ extends Creature{
 		
 		PairIntegerDouble action_reward = new PairIntegerDouble(max_index_max_q.get_my_integer(), proximate_reward);
 
+		
+		System.out.println("Ultimate Reward");
+		
+		System.out.println(ultimate_reward);
+		System.out.println("Proximate Reward");
+		
+		System.out.println(proximate_reward);
+
+		
 		
 		return action_reward;
 		
@@ -116,6 +131,8 @@ public class CreatureTabularQ extends Creature{
 	
 	/// Sets the proximate reward.
 	public void process_evolver_advice(double[] evolver_advice) {
+		System.out.println("alskdfmasdlfkamsdflkamsdflkamsdflkm");
+		
 		this.proximate_reward_matrix = evolver_advice;
 				
 	}
@@ -153,25 +170,64 @@ public class CreatureTabularQ extends Creature{
 	
 	public static void main(String[] args) {
 
+		
+		ExperimentTypeTabularMDP experiment_type = ExperimentTypeTabularMDP.GRID;
+		
+		
 		int num_steps = 100000;
-		int chain_length = 10;
+		int chain_length = 3;
+		int grid_length = 100;
+		int grid_height = 100;
+		
 		int day_steps = 1000;
-		double move_probability = .9;
-		WorldChainMDP world = new WorldChainMDP(chain_length, move_probability);
+		double move_probability = 0.1;
 		
-		int num_actions = 3;
-		double discount = .1;
+		double discount = 0.9;
 		double creature_learning_rate = .01;
+
+		WorldTabular world = null;
+		int num_states = 0;
+		int num_actions = 0;
 		
 		
-		CreatureTabularQ creature = new CreatureTabularQ(chain_length, num_actions, discount, creature_learning_rate );
+		if(experiment_type == ExperimentTypeTabularMDP.CHAIN) {
+			 world = new WorldChainMDP(chain_length, move_probability);
+			
+			num_actions = 3;
+			num_states = chain_length;
+		
+			
+			
+		}
+		
+		if(experiment_type == ExperimentTypeTabularMDP.GRID) {
+			 world = new WorldGridMDP(grid_length, grid_height, move_probability);
+			
+			num_actions = 5;
+			num_states = grid_length*grid_height;
+			
+			
+		}
+
+		CreatureTabularQ creature = new CreatureTabularQ(num_states, num_actions, discount, creature_learning_rate );
+
+		/// True Reward Vector
 		
 		
-		double[] chain_reward = new double[chain_length];
-		chain_reward[chain_length-1] = 1;
+		double[] true_reward_vector = world.get_reward_vector();
 		
 		
-		creature.process_evolver_advice(chain_reward);
+		
+		
+		//double[] chain_reward = new double[chain_length];
+		//chain_reward[chain_length-1] = 1;
+		
+		
+		creature.process_evolver_advice(true_reward_vector);
+		
+		//System.out.println(Arrays.toString(true_reward_vector));
+		
+		
 		
 		for(int i =0; i < num_steps; i ++) {
 			

@@ -2,6 +2,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+enum ExperimentTypeTabularMDP{
+	CHAIN, 
+	GRID,
+}
+
+
 
 public class ExperimentManagerChainMDP extends ExperimentManager {
 

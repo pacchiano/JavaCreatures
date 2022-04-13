@@ -1,16 +1,13 @@
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Arrays;
 
-public class WorldGridMDP extends World {
+public class WorldGridMDP extends WorldTabular {
 
 	int length;
 	int height;
-	int current_location;
-	int food_location;
 	int max_index;
+	int[] vector_current_location;
 	
-	double move_probability;
-	
-	public WorldGridMDP(int length, int height, int move_probability) {
+	public WorldGridMDP(int length, int height, double move_probability) {
 		
 		this.length = length;
 		this.height = height;
@@ -20,39 +17,26 @@ public class WorldGridMDP extends World {
 	
 	
 		this.current_location = 0;
-		this.food_location = ThreadLocalRandom.current().nextInt(0, this.max_index);
+		/// The vector current location is [height_index, length_index]
+		this.vector_current_location  =  new int[]{0,0};
+		this.food_location =  length*height-1;//ThreadLocalRandom.current().nextInt(0, this.max_index);
+		this.num_states = this.length*this.height;
 			
 	}
 	
 	
 	
-	
-	public int[] get_state() {
+	public double[] get_reward_vector() {
 		
-		int[] result = new int[2];	
-		result[0] = this.current_location;
-		if(this.current_location == this.food_location) {
-			result[1] = 1;
-		}
-		else {
-			result[1] = 0;
-		}
+		double[] result = new double[this.length*this.height];
+		result[this.food_location] = 1;
 		return result;
-		
-		
-		
 		
 		
 	}
 	
 	
 	
-	
-	public void reset_world() {
-		this.current_location = 0;
-	
-}
-
 
 	public void step(int creature_action) {
 		/// Stay
@@ -63,31 +47,36 @@ public class WorldGridMDP extends World {
 
 		int success = ProbabilityUtils.sample_bernoulli(this.move_probability);
 
-		/// Move left
+		/// Move left - decrease the length index by one
 		if(creature_action == 1) {
-			this.current_location = Math.max(this.current_location - success, 0 );			
+			this.vector_current_location[1] = Math.max(this.vector_current_location[1] - success, 0 );			
+			
 			
 		}
 
-		/// Trye to move right
+		/// Trye to move right - increase the length index by one
 		if(creature_action == 2) {
-			this.current_location = Math.min(this.current_location + success, this.length-1 );			
+			this.vector_current_location[1] = Math.min(this.vector_current_location[1] + success, this.length-1);
+			//this.current_location = Math.min(this.current_location + success, this.length-1 );			
 			
 		}
 		
-		/// Move up
+		/// Move up - decrease the height index by one
 		if(creature_action == 3) {
-			this.current_location = Math.max(this.current_location - success, 0 );			
+			this.vector_current_location[0] = Math.max(this.vector_current_location[0] - success, 0 );			
+
 			
 		}
 
-		/// Move down
+		/// Move down - increase the height index by one
 		if(creature_action == 4) {
-			this.current_location = Math.min(this.current_location + success, this.length-1 );			
+			this.vector_current_location[0] = Math.min(this.vector_current_location[0] + success, this.height-1);
 			
 		}
 		
 
+		
+		this.current_location = this.vector_current_location[0]*this.length + this.vector_current_location[1];
 		
 		
 		
