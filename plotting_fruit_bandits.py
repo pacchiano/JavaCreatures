@@ -126,13 +126,13 @@ def load_files(num_fruit_types, experiment_name, creature_horizon, num_iteration
 
 	return results
 
-def generate_reward_plot_filename_and_title(results):
+def generate_reward_plot_filename_and_title(results, suffix = ""):
 	experiment_name = results["experiment_name"]
 	num_experiments = results["num_experiments"]
 	num_iterations = results["num_iterations"]
 	creature_horizon = results["creature_horizon"]
-	file_name = "{}_reward_results_E{}_T{}_H{}.png".format(experiment_name, num_experiments, num_iterations, creature_horizon)
-	title = "{} reward results E{} T{} H{}.png".format(experiment_name, num_experiments, num_iterations, creature_horizon)
+	file_name = "{}_{}_reward_results_E{}_T{}_H{}.png".format(experiment_name, suffix, num_experiments, num_iterations, creature_horizon)
+	title = "{} {} reward results E{} T{} H{}.png".format(experiment_name, suffix, num_experiments, num_iterations, creature_horizon)
 	return file_name, title
 
 
@@ -142,7 +142,7 @@ def generate_probabilities_plot_filename_and_title(results,  suffix = "evolver")
 	num_iterations = results["num_iterations"]
 	creature_horizon = results["creature_horizon"]
 	file_name = "{}_{}_probabilities_results_E{}_T{}_H{}.png".format(experiment_name, suffix, num_experiments, num_iterations, creature_horizon)
-	title = "{} {} probabilities results E{} T{} H{}.png".format(experiment_name, suffix, num_experiments, num_iterations, creature_horizon)
+	title = "{} {} probabilities results E{} T{} H{}".format(experiment_name, suffix, num_experiments, num_iterations, creature_horizon)
 	return file_name, title
 
 
@@ -197,8 +197,6 @@ def plot_probabilities_results(plot_filename, plot_title, probabilities_matrix, 
 
 				interpolated_probabilities_matrix_numpy[i, :, fruit_type] = np.interp(np.arange(num_iterations),  indices_mask, focus_probs  )
 
-	
-	
 
 	mean_probabilities, std_probabilities = process_probabilities_results(interpolated_probabilities_matrix_numpy, averaging_window = averaging_window)
 	timesteps = (np.arange(int(num_iterations/averaging_window) ) + 1)*averaging_window
@@ -249,8 +247,8 @@ if __name__ == "__main__":
 
 	focus_fruit_world_index = 0
 
-	for experiment_name in ["MultiWorldScenarioAdaptive1"]: #["MultiWorldScenarioReactive1", "MultiWorldScenarioAdaptive1", "Scenario1","Scenario2","Scenario3","Scenario4","Scenario5" ]:
-
+	#for experiment_name in [ "Scatter-ESstepSizep1-AdaptiveH1000", "Scatter-ESstepSizep01-AdaptiveH1000", "Scatter-ESstepSizep001-AdaoptiveH1000"]:#["MultiWorldScenarioAdaptive1"]: #["MultiWorldScenarioReactive1", "MultiWorldScenarioAdaptive1", "Scenario1","Scenario2","Scenario3","Scenario4","Scenario5" ]:
+	for experiment_name in ["Scatter-ESstepSizep1-AdaptiveH1000"]:
 		results = load_files(num_fruit_types, experiment_name, creature_horizon, num_iterations)
 
 		reward_plot_filename, reward_plot_title = generate_reward_plot_filename_and_title(results)

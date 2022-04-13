@@ -1,36 +1,12 @@
 //package smells;
 
 
-import java.lang.Math;
 import java.util.Arrays;
 import java.util.Random;
 
 
 
-class QuadraticFunc{
-int dimension;
-double[] bias;
-double[] scalings;
-	
-	
-	public QuadraticFunc(int dimension, double[] bias, double[] scalings) {
-		this.dimension = dimension;
-		this.bias = bias;
-		this.scalings = scalings;
-		
-	}
-	
-	public double evaluate_point(double[] x) {
-		double value = 0;
-		for(int i =0; i < this.dimension; i++) {
-			value += this.scalings[i]*Math.pow(x[i] - this.bias[i],2);	
-		}
-		return value;
-	}
- 	
-	
-	
-}
+
 
 
 public class ES {
@@ -70,6 +46,8 @@ public class ES {
 		return this.weights_vector;
 	}
 	
+	
+
 	
 	
 	/// Gradient Ascent Using the ES gradient. Using only the reward from the perturbed weight vector. 

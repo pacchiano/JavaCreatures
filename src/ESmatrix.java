@@ -1,40 +1,10 @@
 //package smells;
 
 
-import java.lang.Math;
 import java.util.Arrays;
 import java.util.Random;
 
 
-class QuadraticFuncMatrix{
-int[] dimensions;
-double[][] bias;
-double[][] scalings;
-	
-	
-	public QuadraticFuncMatrix(int[] dimensions, double[][] bias, double[][] scalings) {
-		this.dimensions = dimensions;
-		this.bias = bias;
-		this.scalings = scalings;
-		
-		
-		
-	}
-	
-	public double evaluate_point(double[][] x) {
-		double value = 0;
-		for(int i =0; i < this.dimensions[0]; i++) {
-			for(int j =0; j < this.dimensions[1]; j++) {				
-				value += this.scalings[i][j]*Math.pow(x[i][j] - this.bias[i][j],2);	
-				
-			}
-		}
-		return value;
-	}
- 	
-	
-	
-}
 
 
 public class ESmatrix {
@@ -197,7 +167,7 @@ public class ESmatrix {
         es_matrix_instance.set_weights_vector( weights_vector);
         
         int num_iterations = 1000000;
-        double[] rewards = new double[num_iterations];
+        //double[] rewards = new double[num_iterations];
         
         
         System.out.println("Created quadratic function");
