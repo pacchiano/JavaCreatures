@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
 		reward_plot_filename, reward_plot_title = generate_reward_plot_filename_and_title(results)
 		
-		IPython.embed()
+		#IPython.embed()
 
 		results_matrix = results["reward_results"]
 		
