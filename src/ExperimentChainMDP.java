@@ -14,16 +14,17 @@ public class ExperimentChainMDP extends Experiment {
 	
 	
 	
-	public ExperimentChainMDP(int num_chain_worlds, int chain_length, double move_probability, double discount, double creature_learning_rate,
+	public ExperimentChainMDP(int num_chain_worlds, int chain_length, double move_probability, 
+			double discount, double creature_learning_rate,
 			double[] worlds_probabilities, double es_std, int creature_horizon,  int day_steps,
-			ExperimentEvolverAdvicePostprocess advice_process_type, 
+			ExperimentEvolverAdvicePostprocess advice_process_type, CreatureEvaluationUltimate creature_evaluation_type,
 			int exp_identifier
 			){
 		
 		
 			
 			super( num_chain_worlds,  chain_length,  chain_length, worlds_probabilities, 
-				 es_std,  creature_horizon,  creature_learning_rate,  day_steps,  advice_process_type,
+				 es_std,  creature_horizon,  creature_learning_rate,  day_steps,  advice_process_type, creature_evaluation_type,
 				 exp_identifier);
 			
 			

@@ -34,22 +34,27 @@ def generate_proximate_plot_filename_and_title(results,  suffix = "evolver"):
 
 if __name__ == "__main__":
 	num_fruit_types = 3
-	num_iterations = 10000
-	creature_horizon = 100
+	num_iterations = 100
+	creature_horizon = 1000
 
 	averaging_window = 1
 
 	focus_fruit_world_index = 0
 
 	#for experiment_name in [ "Scatter-ESstepSizep1-AdaptiveH1000", "Scatter-ESstepSizep01-AdaptiveH1000", "Scatter-ESstepSizep001-AdaoptiveH1000"]:#["MultiWorldScenarioAdaptive1"]: #["MultiWorldScenarioReactive1", "MultiWorldScenarioAdaptive1", "Scenario1","Scenario2","Scenario3","Scenario4","Scenario5" ]:
-	for experiment_name in [ "ProximateBasic2" ]:
+	#for experiment_name in [ "ProximateBasic2" ]:
+	#for experiment_name in ["Baldwin-ES-p1-Reactive"]:
+	#for experiment_name in ["Baldwin-ES-p1-CLRp1-H100"]:
+	for experiment_name in ["Baldwin-ES-p1-CLRp1-H1000"]:
+
+		
 		results = load_files(num_fruit_types, experiment_name, creature_horizon, num_iterations)
 
 		reward_plot_filename, reward_plot_title = generate_reward_plot_filename_and_title(results)
 		
 
 		results_matrix = results["reward_results"]
-		
+		#IPython.embed()
 		if num_iterations != results["num_iterations"]:
 			raise ValueError("num iterations do not agree in log file")
 

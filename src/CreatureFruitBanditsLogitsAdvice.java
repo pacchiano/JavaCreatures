@@ -38,7 +38,7 @@ public class CreatureFruitBanditsLogitsAdvice extends CreatureFruitBandits{
 	}
 	
 	
-	public PairIntegerDouble step(int[] fruit_type_poison_info ) {
+	public PairIntegerDouble step(double[] fruit_type_poison_info ) {
 		
 		//System.out.println("Creature probability weights");
 		//System.out.println(Arrays.toString(this.probability_weights));
@@ -59,7 +59,7 @@ public class CreatureFruitBanditsLogitsAdvice extends CreatureFruitBandits{
 		
 		/// If the creature is not sick
 		if(!this.sick) {
-			int action = this.action(fruit_type_poison_info[0]);
+			int action = this.action((int)fruit_type_poison_info[0]);
 			
 			if(action == 1) {
 		
@@ -85,6 +85,8 @@ public class CreatureFruitBanditsLogitsAdvice extends CreatureFruitBandits{
 				
 
 		this.ultimate_reward_collected += instantaneous_reward;
+		this.last_reward_collected = instantaneous_reward;
+		
 		PairIntegerDouble action_reward = new PairIntegerDouble(output_action, instantaneous_reward);
 		return action_reward;
 		
@@ -114,7 +116,7 @@ public class CreatureFruitBanditsLogitsAdvice extends CreatureFruitBandits{
     	
     	
     	for(int i=0; i < num_creature_steps; i++) {
-    		int[] fruit_type_poison_info = fruitworld.get_state();
+    		double[] fruit_type_poison_info = fruitworld.get_state();
     		//System.out.println("Fruitworld sample");
     		//System.out.println(Arrays.toString(fruit_type_poison_info));
 

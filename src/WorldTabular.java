@@ -13,14 +13,21 @@ public abstract class WorldTabular extends World{
 	public void reset_world() {
 		this.current_location = 0;
 	
-}
+	}
+	
+	
 	
 	public abstract void step(int creature_action);
 	
+	public int get_state_dimension() {
+		return 2;
+	}
 	
-	public int[] get_state() {
+	
+	
+	public double[] get_state() {
 		
-		int[] result = new int[2];	
+		double[] result = new double[2];	
 		result[0] = this.current_location;
 		if(this.current_location == this.food_location) {
 			result[1] = 1;
@@ -41,7 +48,6 @@ public abstract class WorldTabular extends World{
 		
 		
 	}
-	
 	
 
 	

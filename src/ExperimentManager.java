@@ -21,7 +21,7 @@ public abstract class ExperimentManager {
 	double[] worlds_probabilities;
 
 	ExperimentEvolverAdvicePostprocess advice_process_type;
-
+	CreatureEvaluationUltimate creature_evaluation_type;
 	
 	
 	public abstract Experiment get_experiment(String experiment_name, int exp_identifier) throws Exception;
@@ -148,14 +148,15 @@ public abstract class ExperimentManager {
 
 				ExperimentResults exp_results = experiment.run_experiment(num_iterations, es_step_size);
 				
-				System.out.println(Arrays.toString(exp_results.ultimate_rewards));
+				//System.out.println(Arrays.toString(exp_results.ultimate_rewards));
 
 				rewards_matrix[i] = exp_results.get_rewards();
 				world_indices_matrix[i] = exp_results.get_world_indices();
 				
 				creature_info_tensor[i] = exp_results.get_creature_info_list();
 				evolver_info_tensor[i] = exp_results.get_evolver_info_list();
-				
+				//System.out.println("ExperimentManagerResults evolver info list:");
+				//System.out.println(Arrays.toString(exp_results.get_evolver_info_list()));
 				
 				
 				

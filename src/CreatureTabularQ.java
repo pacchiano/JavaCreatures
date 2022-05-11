@@ -22,9 +22,9 @@ public class CreatureTabularQ extends Creature{
 	
 	
 	/// Remember the state dimension is 2
-	public PairIntegerDouble step(int[] state ) {
-		int current_location = state[0];
-		int ultimate_reward = state[1];
+	public PairIntegerDouble step(double[] state ) {
+		int current_location = (int) state[0];
+		double ultimate_reward = state[1];
 		
 
 //		System.out.println("Current Location");
@@ -75,10 +75,10 @@ public class CreatureTabularQ extends Creature{
 	
 	
 	//// This method implements Q learning
-	public void update(int[] state, PairIntegerDouble action_reward, int[] next_state) {
-		int current_location = state[0];
+	public void update(double[] state, PairIntegerDouble action_reward, double[] next_state) {
+		int current_location = (int) state[0];
 		double reward = action_reward.get_my_double(); 
-		int next_location = next_state[0];
+		int next_location = (int) next_state[0];
 		
 		
 		double old_q_val = this.q_table[current_location][action_reward.get_my_integer()];
@@ -93,28 +93,6 @@ public class CreatureTabularQ extends Creature{
 		this.q_table[current_location][action_reward.get_my_integer()] += this.creature_learning_rate*(reward + this.discount*max_next_q_val - old_q_val);
 
 		
-//		
-//		System.out.println("current location");
-//		System.out.println(current_location);
-//
-//		
-//		System.out.println("next location");
-//		System.out.println(next_location);
-//		
-//		
-//		System.out.println("Old q val");
-//		System.out.println(old_q_val);
-//		
-//		System.out.println("Max next q val");
-//		System.out.println(max_next_q_val);
-//		
-//		
-//		
-//		System.out.println("New q val");
-//		System.out.println(this.q_table[current_location][action_reward.get_my_integer()]);
-//		
-//		System.out.println("Proximate Reward vector");
-//		System.out.println(Arrays.toString(this.proximate_reward_matrix));
 		
 		
 		
@@ -176,10 +154,10 @@ public class CreatureTabularQ extends Creature{
 		
 		int num_steps = 100000;
 		int chain_length = 3;
-		int grid_length = 100;
-		int grid_height = 100;
+		int grid_length = 10;
+		int grid_height = 10;
 		
-		int day_steps = 1000;
+		int day_steps = 100;
 		double move_probability = 0.1;
 		
 		double discount = 0.9;
@@ -191,7 +169,7 @@ public class CreatureTabularQ extends Creature{
 		
 		
 		if(experiment_type == ExperimentTypeTabularMDP.CHAIN) {
-			 world = new WorldChainMDP(chain_length, move_probability);
+			 world = new WorldTabularChainMDP(chain_length, move_probability);
 			
 			num_actions = 3;
 			num_states = chain_length;
@@ -201,7 +179,9 @@ public class CreatureTabularQ extends Creature{
 		}
 		
 		if(experiment_type == ExperimentTypeTabularMDP.GRID) {
-			 world = new WorldGridMDP(grid_length, grid_height, move_probability);
+			int food_source_location[] = { grid_height-1,  grid_length-1};
+			world = new WorldTabularGridMDP(grid_length, grid_height, 
+					move_probability, food_source_location);
 			
 			num_actions = 5;
 			num_states = grid_length*grid_height;
@@ -235,10 +215,10 @@ public class CreatureTabularQ extends Creature{
 				world.reset_world();
 			}
 			
-			int[] state = world.get_state();
+			double[] state = world.get_state();
 			PairIntegerDouble action_reward = creature.step(state);
 			world.step(action_reward.get_my_integer());
-			int[] next_state = world.get_state();
+			double[] next_state = world.get_state();
 			creature.update(state, action_reward, next_state);
 			
 			System.out.println("Reward");

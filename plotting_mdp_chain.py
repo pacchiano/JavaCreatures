@@ -12,6 +12,11 @@ import zipfile
 
 
 
+
+### Add a seed to the experiments.
+
+
+
 from plotting_fruit_bandits import get_colors, reshape_averaging, reshape_averaging_probabilities_matrix, process_reward_results, process_probabilities_results
 from plotting_fruit_bandits import load_files, generate_reward_plot_filename_and_title, generate_probabilities_plot_filename_and_title, plot_reward_results, plot_probabilities_results
 
@@ -102,7 +107,7 @@ def load_files_mdp_chain(num_fruit_types, experiment_name, creature_horizon, num
 
 if __name__ == "__main__":
 	chain_length = 3
-	num_iterations = 20000
+	num_iterations = 100000
 	creature_horizon = 10000
 
 	averaging_window = 1

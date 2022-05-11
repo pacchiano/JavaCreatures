@@ -7,11 +7,11 @@ public class MultiThreadedExperimentChainMDP extends MultiThreadedExperiment{
 	
 	public MultiThreadedExperimentChainMDP(int num_chain_worlds, int chain_length, double move_probability, double discount, double creature_learning_rate,
 			double[] worlds_probabilities, double es_std, int creature_horizon,  int day_steps, int num_iterations, double es_step_size,
-			ExperimentEvolverAdvicePostprocess advice_process_type, int thread_index) {
+			ExperimentEvolverAdvicePostprocess advice_process_type, CreatureEvaluationUltimate creature_evaluation_type, int thread_index) {
 		
 		this.experiment = new ExperimentChainMDP( num_chain_worlds,  chain_length, move_probability, discount,  creature_learning_rate,
 				 worlds_probabilities, es_std, creature_horizon, day_steps,
-				 advice_process_type, 
+				 advice_process_type, creature_evaluation_type,
 				 thread_index
 				);
 		

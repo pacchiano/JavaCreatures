@@ -34,20 +34,24 @@ public class ExperimentFruitBandits extends Experiment{
 	public ExperimentFruitBandits(int num_fruit_bandit_worlds, int num_fruit_types, double[] worlds_probabilities,
 			double[][] fruit_type_probabilities_matrix, double[][] poison_probabilities_matrix,
 			double stay_sick_probability, double es_std, int creature_horizon, double creature_learning_rate, 
-			ExperimentEvolverAdvicePostprocess advice_process_type, ExperimentFruitBanditsType experiment_type, int exp_identifier) {
+			ExperimentEvolverAdvicePostprocess advice_process_type, ExperimentFruitBanditsType experiment_type, 
+			CreatureEvaluationUltimate creature_evaluation_type, int exp_identifier) throws Exception{
 
 
 		
-		super(num_fruit_bandit_worlds, num_fruit_types, num_fruit_types, worlds_probabilities, es_std, creature_horizon,  creature_learning_rate, 1,
-				 advice_process_type, exp_identifier);
+		super(num_fruit_bandit_worlds, num_fruit_types, num_fruit_types, worlds_probabilities, es_std, 
+				creature_horizon,  creature_learning_rate, 1,
+				 advice_process_type, creature_evaluation_type, exp_identifier);
 
 		this.experiment_type = experiment_type;
 		this.num_fruit_types = num_fruit_types;
 		this.fruit_type_probabilities_matrix = fruit_type_probabilities_matrix;
 		this.poison_probabilities_matrix = poison_probabilities_matrix;
 
-		
-		
+		if(!(experiment_type == ExperimentFruitBanditsType.PRIOR_POLICY | experiment_type == ExperimentFruitBanditsType.PROXIMATE_REWARD)) {
+			throw new Exception("ExperimentFruitBanditsType different from PRIOR_POLICY or PROXIMATE_REWARD");	
+	
+		}
 		
 		
 		try {

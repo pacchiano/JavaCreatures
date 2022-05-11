@@ -16,18 +16,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 	double[][] fruit_type_probabilities_matrix ;
 	double[][] poison_probabilities_matrix ;
 	double stay_sick_probability ;
-	//int num_iterations ;
-	//double es_step_size ;
-	//double creature_learning_rate ;
-
-//	int num_worlds;
-//	double[] worlds_probabilities;
 	
 	//String experiment_name;
 	ExperimentFruitBanditsType experiment_type;
 	
-//	ExperimentEvolverAdvicePostprocess advice_process_type;
-
+	
 	
 	
 	
@@ -60,28 +53,34 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     	
     	this.stay_sick_probability = 0;
     	this.es_std = .1;
-    	this.num_iterations = 1000;//10000;
-    	this.creature_horizon = 100;
     	this.es_step_size = .1;
     	this.creature_learning_rate = 0;
 
     	this.advice_process_type = ExperimentEvolverAdvicePostprocess.LOGITS_TO_PROBS;
     	this.experiment_type = ExperimentFruitBanditsType.PRIOR_POLICY;
-    	
+    	this.creature_evaluation_type =  CreatureEvaluationUltimate.FINAL;
     	//this.experiment_type = ExperimentFruitBanditsType.PRIOR_POLICY;
     	
+    	
+    	
     	if(experiment_name ==  "ProximateBasic1") {
-        	this.advice_process_type = ExperimentEvolverAdvicePostprocess.RAW;
+        	this.num_iterations = 1000;//10000;
+        	this.creature_horizon = 1000;
+
+    		this.advice_process_type = ExperimentEvolverAdvicePostprocess.RAW;
         	this.experiment_type = ExperimentFruitBanditsType.PROXIMATE_REWARD;
 
-        	this.creature_horizon = 1000;
         	this.es_step_size = .1;
         	this.creature_learning_rate = 0.1;
     		   		
     	}
  	
     	if(experiment_name ==  "ProximateBasic2") {
-        	this.advice_process_type = ExperimentEvolverAdvicePostprocess.RAW;
+        	this.num_iterations = 10001;
+        	this.creature_horizon = 100;
+        	
+    		
+    		this.advice_process_type = ExperimentEvolverAdvicePostprocess.RAW;
         	this.experiment_type = ExperimentFruitBanditsType.PROXIMATE_REWARD;
 
         	this.creature_horizon = 100;
@@ -91,99 +90,97 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     	}
 
     	
-    	if(experiment_name ==  "Scatter-ESstepSizep1-Reactive") {
+    	if(experiment_name ==  "Baldwin-ES-p1-Reactive") {
     		
-        	this.creature_horizon = 100;
-        	this.es_step_size = .1;
-        	this.creature_learning_rate = 0;
-    		   		
-    	}
-    	
-
-    	if(experiment_name ==  "Scatter-ESstepSizep01-Reactive") {
-    		
-        	this.num_iterations = 10000;//10000;
-        	this.creature_horizon = 100;
-        	this.es_step_size = .01;
-        	this.creature_learning_rate = 0;
-    		   		
-    	}
-
-    	
-    	if(experiment_name ==  "Scatter-ESstepSizep001-Reactive") {
-    		
-        	this.creature_horizon = 100;
-        	this.es_step_size = .001;
-        	this.creature_learning_rate = 0;
-    		   		
-    	}
-    	
-    	
-    	if(experiment_name ==  "Scatter-ESstepSizep1-AdaptiveH100") {
-    		
-        	this.creature_horizon = 100;
-        	this.es_step_size = .1;
-        	this.creature_learning_rate = 0.1;
-    		   		
-    	}
-    	
-
-    	if(experiment_name ==  "Scatter-ESstepSizep01-AdaptiveH100") {
-    		
-        	this.creature_horizon = 100;
-        	this.es_step_size = .01;
-        	this.creature_learning_rate = 0.1;
-    		   		
-    	}
-
-    	
-    	if(experiment_name ==  "Scatter-ESstepSizep001-AdaoptiveH100") {
-    		
-        	this.creature_horizon = 100;
-        	this.es_step_size = .001;
-        	this.creature_learning_rate = 0.1;
-    		   		
-    	}
-
-    	
-    	
-    	
-    	if(experiment_name ==  "Scatter-ESstepSizep1-AdaptiveH1000") {
-    		
-        	this.creature_horizon = 1000;
-        	this.es_step_size = .1;
-        	this.creature_learning_rate = 0.1;
-    		   		
-    	}
-    	
-
-    	if(experiment_name ==  "Scatter-ESstepSizep01-AdaptiveH1000") {
-    		
-        	this.creature_horizon = 1000;
-        	this.es_step_size = .01;
-        	this.creature_learning_rate = 0.1;
-
+        	this.num_iterations = 1000000;
+        	this.creature_horizon = 10;
         	
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0;
+    		 
+        	
+    	}
+    	
+
+    	if(experiment_name ==  "Baldwin-ES-p1-CLRp1-H100") {
+  
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+        	
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0.1;
+    		   		
+        	
+    	}
+
+
+    	if(experiment_name ==  "Baldwin-ES-p1-CLRp01-H100") {
+    		
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0.01;
+        	
+    	}
+
+
+    	if(experiment_name ==  "Baldwin-ES-p1-CLRp001-H100") {
+    		
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0.001;
         	
     	}
 
     	
-    	if(experiment_name ==  "Scatter-ESstepSizep001-AdaoptiveH1000") {
+    	
+    	if(experiment_name ==  "Baldwin-ES-p1-CLRp1-H1000") {
     		
+        	this.num_iterations = 10000;
         	this.creature_horizon = 1000;
-        	this.es_step_size = .001;
+
+        	this.es_step_size = .1;
         	this.creature_learning_rate = 0.1;
     		   		
+        	
     	}
 
+
+    	if(experiment_name ==  "Baldwin-ES-p1-CLRp01-H1000") {
+    		
+        	this.num_iterations = 10000;
+        	this.creature_horizon = 1000;
+
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0.01;
+        	
+    	}
+
+
+    	if(experiment_name ==  "Baldwin-ES-p1-CLRp001-H1000") {
+    		
+        	this.num_iterations = 10000;
+        	this.creature_horizon = 1000;
+
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0.001;
+        	
+    	}
     	
     	
+    	
+        	
     	
 
 		/// Poison prob = 1 for one fruit.
 		else if (experiment_name == "MultiworldScenarioReactive1")
 		{	    	
-			
+        	this.num_iterations = 1000;
+        	this.creature_horizon = 100;
+
 			
 	
 	    	this.num_worlds = 2;
@@ -222,7 +219,9 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 		{	    	
 			
 			
-	
+        	this.num_iterations = 1000;
+        	this.creature_horizon = 100;
+
 	    	this.num_worlds = 2;
 	    	this.worlds_probabilities = new double[2];
 	    	this.worlds_probabilities[0] = .5;
@@ -257,12 +256,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 		}		
 
 		
+    	
+    	
+    	
 		
 	}
-	
-	
-	
-	
 	
 	
 	
@@ -273,18 +271,23 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 		this.set_experiment_params(experiment_name);		
 		
 
+		
 		ExperimentFruitBandits experiment = new ExperimentFruitBandits(this.num_worlds, this.num_fruit_types, 
 				this.worlds_probabilities, this.fruit_type_probabilities_matrix, 
     			this.poison_probabilities_matrix,  this.stay_sick_probability, 
-    			this.es_std, this.creature_horizon, this.creature_learning_rate, this.advice_process_type, this.experiment_type, exp_identifier);
+    			this.es_std, this.creature_horizon, this.creature_learning_rate, 
+    			this.advice_process_type,  this.experiment_type, this.creature_evaluation_type, exp_identifier);
 		
+		
+		
+
 		
 		return experiment;
 	
 		
-		
-		
 	}
+	
+	
 	
 	public MultiThreadedExperimentFruitBandits get_multithreaded_experiment(String experiment_name, int thread_index) throws Exception {
 		this.set_experiment_params(experiment_name);		
@@ -292,8 +295,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 
 		MultiThreadedExperimentFruitBandits experiment = new MultiThreadedExperimentFruitBandits(this.num_worlds, this.num_fruit_types, this.worlds_probabilities, this.fruit_type_probabilities_matrix, 
     			this.poison_probabilities_matrix,  this.stay_sick_probability, this.es_std, this.creature_horizon, 
-    			this.creature_learning_rate,this.num_iterations, this.es_step_size, this.advice_process_type, this.experiment_type, thread_index);
+    			this.creature_learning_rate,this.num_iterations, this.es_step_size, this.advice_process_type, 
+    			this.experiment_type, this.creature_evaluation_type, thread_index);
 		
+		
+
 		
 		return experiment;
 	
@@ -366,23 +372,39 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			myWriter.write(Arrays.deepToString(sweep_results.evolver_info_tensor));
 			myWriter.write("\n");
 
+			
+			
+			
 			myWriter.write(Arrays.deepToString(sweep_results.world_indices_matrix));
 			myWriter.write("\n");
-			
-			
 			
 			
 			
 			myWriter.close();
 			System.out.println("Successfully wrote to the file.");
 	
-			String zip_filename = folder + file_name_stub + ".zip";
-			ZipFile.zip_file(txt_filename, zip_filename);
+			String tmp_zip_filename = folder + file_name_stub + "_tmp"+ ".zip";
+			ZipFile.zip_file(txt_filename, tmp_zip_filename);
 			
 			
 			//// Deleting the un-zipped file
 			File txtFile = new File(txt_filename);
 			txtFile.delete();
+			
+			
+			//// Double zip
+			String zip_filename = folder + file_name_stub + ".zip";
+			ZipFile.zip_file(tmp_zip_filename, zip_filename);
+
+			
+			//			
+//
+//			//// Deleting the tmp zip file
+//			
+//			File tmpZipFile = new File(tmp_zip_filename);
+//			tmpZipFile.delete();
+			
+
 			
 		
 		} catch (IOException e) {
@@ -410,10 +432,20 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 		}
 		
 
-		//String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	, "Scenario1", 
-		//		"Scenario2", "Scenario3", "Scenario4", "Scenario5" };
+//		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	, "Scenario1", 
+//				"Scenario2", "Scenario3", "Scenario4", "Scenario5" };
 
-		String[] experiment_names = {  "ProximateBasic2" };
+		
+		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	 };
+
+		
+//		String[] experiment_names = {  "Baldwin-ES-p1-Reactive"		, "Baldwin-ES-p1-CLRp1-H100",  "Baldwin-ES-p1-CLRp01-H100",
+//				"Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H1000", "Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000"};
+
+		
+		
+		
+//		String[] experiment_names = {  "Baldwin-ES-p1-Reactive" };
 		
 //		String[] experiment_names = { "Scatter-ESstepSizep1-Reactive", 	"Scatter-ESstepSizep01-Reactive", "Scatter-ESstepSizep001-Reactive", "Scatter-ESstepSizep1-AdaptiveH100", 
 //				"Scatter-ESstepSizep01-AdaptiveH100",  "Scatter-ESstepSizep001-AdaoptiveH100",  "Scatter-ESstepSizep1-AdaptiveH1000", 
@@ -431,7 +463,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			
 
 			
-			String folder_name = "./results/";
+			String folder_name = "/Users/apacchiano/Documents/Research/JavaProjects/CreaturesNewcopy/results/";
 			String file_name_stub = exp_manager.get_experiment_filename_stub();
 			//String file_location = "./results/" + file_name + ".txt";
 			
@@ -448,6 +480,10 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			
 			ExperimentManagerResults sweep_results = exp_manager.get_experiment_sweep_results_multithreaded();
 
+			
+			
+			
+			
 			
 			exp_manager.write_log_file(folder_name, file_name_stub, sweep_results);
 			

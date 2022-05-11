@@ -57,9 +57,21 @@ def process_probabilities_results(probabilities_matrix, averaging_window = 1):
 def load_files(num_fruit_types, experiment_name, creature_horizon, num_iterations):
 	zip_filename = "./results/{}_fruitBandits_".format(experiment_name) + str(num_fruit_types) + "_H" + str(creature_horizon) + "_T" + str(num_iterations) + ".zip"
 	txt_filename = "./results/{}_fruitBandits_".format(experiment_name) + str(num_fruit_types) + "_H" + str(creature_horizon) + "_T" + str(num_iterations) + ".txt"
-	
 	zip_file = zipfile.ZipFile(zip_filename, "r")
 	zip_file.extractall("./results/")
+
+	try:
+		tmp_zip_filename = "./results/{}_fruitBandits_".format(experiment_name) + str(num_fruit_types) + "_H" + str(creature_horizon) + "_T" + str(num_iterations) + "_tmp" + ".zip"
+				
+		tmp_zip_file = zipfile.ZipFile(tmp_zip_filename, "r")
+		tmp_zip_file.extractall("./results/")
+
+
+
+		os.remove(tmp_zip_filename)
+	except:
+		print("Zip results file was not double zipped")
+
 
 
 	f = open(txt_filename, "r")
@@ -208,7 +220,6 @@ def plot_probabilities_results(plot_filename, plot_title, probabilities_matrix, 
 	for i in range(num_fruit_types):
 
 
-
 		if focus_fruit_world_index == None:
 
 			label_poison = ""	
@@ -238,17 +249,21 @@ def plot_probabilities_results(plot_filename, plot_title, probabilities_matrix, 
 
 
 
+
+
+
 if __name__ == "__main__":
 	num_fruit_types = 3
-	num_iterations = 10000
-	creature_horizon = 1000
+	num_iterations = 100000
+	creature_horizon = 1
+	#creature_horizon = 1000
 
 	averaging_window = 1
 
 	focus_fruit_world_index = 0
 
 	#for experiment_name in [ "Scatter-ESstepSizep1-AdaptiveH1000", "Scatter-ESstepSizep01-AdaptiveH1000", "Scatter-ESstepSizep001-AdaoptiveH1000"]:#["MultiWorldScenarioAdaptive1"]: #["MultiWorldScenarioReactive1", "MultiWorldScenarioAdaptive1", "Scenario1","Scenario2","Scenario3","Scenario4","Scenario5" ]:
-	for experiment_name in ["Scatter-ESstepSizep1-AdaptiveH1000"]:
+	for experiment_name in ["Baldwin-ES-p1-Reactive"]:
 		results = load_files(num_fruit_types, experiment_name, creature_horizon, num_iterations)
 
 		reward_plot_filename, reward_plot_title = generate_reward_plot_filename_and_title(results)

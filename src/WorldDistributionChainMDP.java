@@ -9,9 +9,9 @@ public class WorldDistributionChainMDP extends WorldDistribution{
 		super( num_chain_MDP_bandit_worlds,  worlds_probabilities);
 		
 		
-		this.worlds = new WorldChainMDP[num_chain_MDP_bandit_worlds];
+		this.worlds = new WorldTabularChainMDP[num_chain_MDP_bandit_worlds];
 		for (int i = 0; i < num_chain_MDP_bandit_worlds; i++) {
-			this.worlds[i] = new WorldChainMDP(chain_length, move_probability);
+			this.worlds[i] = new WorldTabularChainMDP(chain_length, move_probability);
 			
 
 		}
@@ -47,7 +47,7 @@ public class WorldDistributionChainMDP extends WorldDistribution{
 				WorldInfo chainworld_info = chain_worlds_distribution.get_world();
 				World chainworld = chainworld_info.get_world();
 				
-				int[] result = chainworld.get_state();
+				double[] result = chainworld.get_state();
 
 				//System.out.println("Asfdlkamsdflkamsdflkamsdlfkm");
 				

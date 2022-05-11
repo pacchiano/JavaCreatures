@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 
@@ -7,6 +8,11 @@ enum ExperimentEvolverAdvicePostprocess{
 }
 
 
+
+enum CreatureEvaluationUltimate{
+	AVERAGE, 
+	FINAL,
+}
 
 
 
@@ -30,10 +36,13 @@ public abstract class Experiment {
 	
 	WorldDistribution worlds_distribution;
 	ExperimentEvolverAdvicePostprocess advice_process_type;
+	CreatureEvaluationUltimate creature_evaluation_type;
+	
+	
 	
 	public Experiment(int num_worlds, int evolver_info_vector_size, int creature_info_vector_size, double[] worlds_probabilities, 
-			double es_std, int creature_horizon, double creature_learning_rate, int day_steps, ExperimentEvolverAdvicePostprocess advice_process_type,
-			int exp_identifier) {
+			double es_std, int creature_horizon, double creature_learning_rate, int day_steps, ExperimentEvolverAdvicePostprocess advice_process_type, 
+			CreatureEvaluationUltimate creature_evaluation_type, int exp_identifier) {
 
 		
 		this.num_worlds = num_worlds;
@@ -47,10 +56,12 @@ public abstract class Experiment {
 		this.creature_horizon = creature_horizon;
 		this.exp_identifier = exp_identifier;
 		this.day_steps = day_steps;
+		this.advice_process_type = advice_process_type;
+		this.creature_evaluation_type = creature_evaluation_type;
 
 	}
 
-	private PairIntegerDouble evaluate_creature(double[] advice) {
+	private PairIntegerDouble evaluate_creature(double[] advice) throws Exception{
 		/// Send advice to creature
 		this.creature.reset();
 		this.creature.process_evolver_advice(advice.clone());
@@ -72,24 +83,45 @@ public abstract class Experiment {
 
 			
 			
-			int[] state = sample_world.get_state();
+			double[] state = sample_world.get_state();
 			// System.out.println("Fruit type poison info");
 			// System.out.println(Arrays.toString(fruit_type_poison_info));
 			
 			PairIntegerDouble action_reward = this.creature.step(state);
 			sample_world.step(action_reward.get_my_integer());
-			int[] next_state = sample_world.get_state();
+			double[] next_state = sample_world.get_state();
 			this.creature.update(state, action_reward, next_state);
 			
 		}
 
-		double ultimate_reward_horizon_normalized = this.creature.get_ultimate_reward_collected() / this.creature_horizon;
+		double ultimate_reward = 0;
 		
-		return new PairIntegerDouble(sample_world_index, ultimate_reward_horizon_normalized);
+		if(this.creature_evaluation_type == CreatureEvaluationUltimate.AVERAGE | this.creature_evaluation_type == CreatureEvaluationUltimate.FINAL) {
+
+			if(this.creature_evaluation_type == CreatureEvaluationUltimate.AVERAGE) {
+				ultimate_reward = this.creature.get_ultimate_reward_collected() / this.creature_horizon;
+			}
+			
+			
+			if(this.creature_evaluation_type == CreatureEvaluationUltimate.FINAL) {
+				ultimate_reward = this.creature.get_last_reward_collected();
+			}
+			
+			
+		
+		}		
+		else {
+			
+			throw new Exception("Creature Evaluation Ultimate not recognized in Experiment.evaluate_creature()");
+			
+			
+			
+		}
+		return new PairIntegerDouble(sample_world_index, ultimate_reward);
 	}
 
 		
-	public ExperimentResults run_experiment(int num_iterations, double step_size) {
+	public ExperimentResults run_experiment(int num_iterations, double step_size) throws Exception {
 
 		double[] initial_evolver_vector = new double[this.evolver_info_vector_size];
 		//// Initialize weights_vector
@@ -109,6 +141,8 @@ public abstract class Experiment {
 
 		this.evolver.set_weights_vector(initial_evolver_vector);
 
+		
+		
 		for (int i = 0; i < num_iterations; i++) {
 
 			//// Send the creature the logits
@@ -121,24 +155,44 @@ public abstract class Experiment {
 			
 			
 			creature_info_list[i] = this.creature.get_creature_info();
-			//System.out.println("Used probs creature");
-			//System.out.println(Arrays.toString(used_probabilities_creature[i]));
+			//System.out.println("Experiment. Creature information");
+			//System.out.println(Arrays.toString(creature_info_list[i]));
 			
 		
-			
-			
-			if(this.advice_process_type == ExperimentEvolverAdvicePostprocess.LOGITS_TO_PROBS) {
-				evolver_info_list[i] = ProbabilityUtils.logits_to_probabilities(this.evolver.get_weights_vector()).clone();
-			}				
+			if(this.advice_process_type == ExperimentEvolverAdvicePostprocess.LOGITS_TO_PROBS | this.advice_process_type == ExperimentEvolverAdvicePostprocess.RAW) {
 				
-			if(this.advice_process_type == ExperimentEvolverAdvicePostprocess.RAW) {
-				evolver_info_list[i] = this.evolver.get_weights_vector().clone();
+			/////// 
+				if(this.advice_process_type == ExperimentEvolverAdvicePostprocess.LOGITS_TO_PROBS) {
+					evolver_info_list[i] = ProbabilityUtils.logits_to_probabilities(this.evolver.get_weights_vector().clone()).clone();
+				}				
+					
+				if(this.advice_process_type == ExperimentEvolverAdvicePostprocess.RAW) {
+					evolver_info_list[i] = this.evolver.get_weights_vector().clone();
 
+				}
+
+				
 			}
-			//System.out.println("Used probs evolver");
-			//System.out.println(Arrays.toString(used_probabilities_evolver[i]));
+			else {
+				
+				throw new Exception("Advice process type not recognized in Experiment.run_experiment()");
+				
+				
+				
+			}
+			
+			
+			
+			//System.out.println("Experiment. Advice process type");
+			//System.out.println(this.advice_process_type);
+			
+			
+			//System.out.println("Experiment. Evolver information.");
+			//System.out.println(Arrays.toString(evolver_info_list[i]));
 
 
+			
+			
 			
 			
 			double[] perturbation = this.evolver.get_sample_perturbation();
@@ -151,6 +205,26 @@ public abstract class Experiment {
 			
 			
 			this.evolver.update_statistics_double_sensing(perturbation, ultimate_reward_perturbed, ultimate_reward_base, step_size);
+			
+			//System.out.println("Experiment. perturbation.");
+			//System.out.println(Arrays.toString(perturbation));
+			//System.out.println("Experiment. ultimate reward perturbed.");
+
+			//System.out.println(ultimate_reward_perturbed);
+			//System.out.println("Experiment. reward base.");
+
+			//System.out.println(ultimate_reward_base);
+			
+			//System.out.println("Experiment. step size.");
+
+			//System.out.println(step_size);
+			
+			
+			//System.out.println("Experiment. weights vector.");
+
+			//System.out.println(Arrays.toString(this.evolver.get_weights_vector()));
+			
+			
 			if(Flags.verbose && i % Flags.logging_frequency == 0) {
 				System.out.println("Experiment " + String.valueOf(this.exp_identifier) + " iteration " + String.valueOf(i));
 				

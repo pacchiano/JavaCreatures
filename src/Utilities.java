@@ -30,6 +30,11 @@ class ZipFile {
 
 
 
+
+
+
+
+
 class PairIntegerDouble {
 	int my_integer;
 	double my_double;
@@ -173,6 +178,55 @@ class ExperimentManagerResults{
 
 
 
-public class Utilities {
+
+public final class Utilities {
+	
+	public static double norm_difference(int[] a, int[] b) {
+		
+		int dimension = a.length;
+		
+		double sum_squares = 0;
+		for(int i =0 ; i < dimension; i ++) {
+			
+			sum_squares +=  (a[i] - b[i])*(a[i] - b[i]) ;
+			
+		}
+		
+		return Math.sqrt(sum_squares);		
+		
+	}
+
+	
+	public static double dot_product(double[] a, double[] b) {
+		double result = 0;
+		for(int i = 0; i < a.length; i++) {
+			
+			result += a[i]*b[i];
+			
+		}
+		
+		return result;
+		
+	}
+	
+	
+	
+	
+	public static double norm_difference(double[] a, double[] b) {
+		
+		int dimension = a.length;
+		
+		double sum_squares = 0;
+		for(int i =0 ; i < dimension; i ++) {
+			
+			sum_squares +=  (a[i] - b[i])*(a[i] - b[i]) ;
+			
+			
+		}
+		
+		return Math.sqrt(sum_squares);		
+		
+	}
+	
 
 }

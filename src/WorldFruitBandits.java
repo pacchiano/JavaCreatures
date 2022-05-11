@@ -39,8 +39,8 @@ public class WorldFruitBandits extends World {
 	}
 	
 
-	public int[] get_fruit_type_poison_info() {
-		int[] result = new int[2];
+	public double[] get_fruit_type_poison_info() {
+		double[] result = new double[2];
 		/// Sample fruit type. Uniformly at random. 
 		int fruit_type_index = ProbabilityUtils.sample_index(this.fruit_type_probabilities);
 		result[0] = fruit_type_index;
@@ -54,9 +54,14 @@ public class WorldFruitBandits extends World {
 	}
 
 	
+	/// This includes the reward.
+	public int get_state_dimension() {
+		return 2;
+		
+	}
 	
 	
-	public int[] get_state() {
+	public double[] get_state() {
 		return this.get_fruit_type_poison_info();
 		
 	}
@@ -81,7 +86,7 @@ public class WorldFruitBandits extends World {
     	
     	WorldFruitBandits fruitworld = new WorldFruitBandits( num_fruit_types, fruit_type_probabilities, poison_probabilities		) ;
     	for(int i=0; i < num_steps; i++) {
-    		int[] result = fruitworld.get_state();
+    		double[] result = fruitworld.get_state();
     		
     		
     		System.out.println(Arrays.toString(result));

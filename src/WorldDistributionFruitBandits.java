@@ -59,7 +59,7 @@ public class WorldDistributionFruitBandits extends WorldDistribution{
 				WorldInfo fruitworld_info = fruit_worlds_distribution.get_world();
 				World fruitworld = fruitworld_info.get_world();
 				
-				int[] result = fruitworld.get_state();
+				double[] result = fruitworld.get_state();
 
 				System.out.println(Arrays.toString(result));
 

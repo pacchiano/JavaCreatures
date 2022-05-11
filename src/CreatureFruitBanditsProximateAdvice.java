@@ -36,7 +36,7 @@ public class CreatureFruitBanditsProximateAdvice extends CreatureFruitBandits{
 	}
 	
 	
-	public PairIntegerDouble step(int[] fruit_type_poison_info ) {
+	public PairIntegerDouble step(double[] fruit_type_poison_info ) {
 		
 		//System.out.println("Creature probability weights");
 		//System.out.println(Arrays.toString(this.probability_weights));
@@ -57,7 +57,7 @@ public class CreatureFruitBanditsProximateAdvice extends CreatureFruitBandits{
 		
 		/// If the creature is still sick
 		if(!this.sick) {
-			int action = this.action(fruit_type_poison_info[0]);
+			int action = this.action((int) fruit_type_poison_info[0]);
 			//System.out.print("Creature took action ");
 			//System.out.println(action);
 			
@@ -65,7 +65,7 @@ public class CreatureFruitBanditsProximateAdvice extends CreatureFruitBandits{
 		
 				//System.out.println("Updated probabilities!!");
 				instantaneous_ultimate_reward = 1 - 2*fruit_type_poison_info[1] ;
-				instantaneous_proximate_reward = this.proximate_rewards[fruit_type_poison_info[0]];
+				instantaneous_proximate_reward = this.proximate_rewards[(int)fruit_type_poison_info[0]];
 				
 //				this.sick = fruit_type_poison_info[1] == 1;
 //				//// Only update when the creature is taking a decision while not sick.
@@ -90,6 +90,8 @@ public class CreatureFruitBanditsProximateAdvice extends CreatureFruitBandits{
 				
 
 		this.ultimate_reward_collected += instantaneous_ultimate_reward;
+
+		this.last_reward_collected = instantaneous_ultimate_reward;
 		
 		PairIntegerDouble result = new PairIntegerDouble(output_action, instantaneous_proximate_reward);
 
@@ -119,7 +121,7 @@ public class CreatureFruitBanditsProximateAdvice extends CreatureFruitBandits{
     	
     	
     	for(int i=0; i < num_creature_steps; i++) {
-    		int[] fruit_type_poison_info = fruitworld.get_state();
+    		double[] fruit_type_poison_info = fruitworld.get_state();
     		//System.out.println("Fruitworld sample");
     		//System.out.println(Arrays.toString(fruit_type_poison_info));
 

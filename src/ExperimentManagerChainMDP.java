@@ -13,7 +13,6 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
 
 	
 	
-	//int num_experiments ;
 	
 	
 	int chain_length;
@@ -23,18 +22,6 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
 	int day_steps;
 
 	
-	
-	
-	//int num_iterations ;
-	//int creature_horizon ;
-	//double es_step_size ;
-
-	//	int num_worlds;
-	//	double[] worlds_probabilities;
-	
-	//String experiment_name;
-	
-//	ExperimentEvolverAdvicePostprocess advice_process_type;
 
 	public void set_experiment_params(String experiment_name) {
 		this.experiment_name = experiment_name;
@@ -53,7 +40,7 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
     	this.creature_learning_rate = 0.01;
 
     	this.advice_process_type = ExperimentEvolverAdvicePostprocess.RAW;
-    	
+    	this.creature_evaluation_type = CreatureEvaluationUltimate.AVERAGE;
     	
     	if(experiment_name ==  "ChainMDPBasic1") {
     		this.num_worlds = 1;
@@ -81,9 +68,13 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
 		ExperimentChainMDP experiment = new ExperimentChainMDP( this.num_worlds,  this.chain_length, this.move_probability, 
 				this.discount, this.creature_learning_rate,
 				this.worlds_probabilities, this.es_std, this.creature_horizon,  this.day_steps,
-				this.advice_process_type, 
+				this.advice_process_type, this.creature_evaluation_type,
 				exp_identifier);
 		
+		if(true) {
+		throw new Exception("Ultimate Reward as last step of reward not implemented in chain MDP. Fix this. Experiment.evaluate_creature()");		
+		
+		}
 		
 		return experiment;
 	
@@ -102,7 +93,7 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
 		MultiThreadedExperimentChainMDP experiment = new MultiThreadedExperimentChainMDP( this.num_worlds,  this.chain_length,  this.move_probability,  
 				this.discount, this.creature_learning_rate,
 				this.worlds_probabilities,  this.es_std,  this.creature_horizon,   this.day_steps,  this.num_iterations,  this.es_step_size,
-				this.advice_process_type,  thread_index);
+				this.advice_process_type, this.creature_evaluation_type, thread_index);
 		
 		
 		return experiment;

@@ -40,15 +40,15 @@ public abstract class CreatureFruitBandits extends Creature{
 	
 	
 		
-	public void update(int[] fruit_type_poison_info, PairIntegerDouble action_reward, int[] dummy_fruit_type_poison_info) {
+	public void update(double[] fruit_type_poison_info, PairIntegerDouble action_reward, double[] dummy_fruit_type_poison_info) {
 		
 		
 		/// If the action is EAT update logits.
 		if(action_reward.get_my_integer() == 1) {
-			this.sick = fruit_type_poison_info[1] == 1;
+			this.sick = (int)fruit_type_poison_info[1] == 1;
 			
 			//// Only update when the creature is taking a decision while not sick.
-			this.update_logits(action_reward.get_my_double(), fruit_type_poison_info[0]);
+			this.update_logits(action_reward.get_my_double(), (int)fruit_type_poison_info[0]);
 		}
 			
 					
@@ -64,6 +64,8 @@ public abstract class CreatureFruitBandits extends Creature{
 		this.probability_weights = new double[this.num_fruit_types];
 		this.logits = new double[this.num_fruit_types];
 		this.ultimate_reward_collected = 0;
+		this.last_reward_collected = 0;
+		
 		this.sick = false;
 		this.update_probability_weights();
 		
