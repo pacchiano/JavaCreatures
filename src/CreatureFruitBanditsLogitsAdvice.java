@@ -56,21 +56,30 @@ public class CreatureFruitBanditsLogitsAdvice extends CreatureFruitBandits{
 			
 		}
 		
+		if(this.dead) {
+			
+				output_action = -1;
+				instantaneous_reward = -1;
+		}
+		
 		
 		/// If the creature is not sick
-		if(!this.sick) {
+		if(!this.sick && ! this.dead) {
 			int action = this.action((int)fruit_type_poison_info[0]);
 			
 			if(action == 1) {
 		
-				instantaneous_reward = 1 - 2*fruit_type_poison_info[1] ;
 				
-//				this.sick = fruit_type_poison_info[1] == 1;
-//				//// Only update when the creature is taking a decision while not sick.
-//				this.update_logits(instantaneous_reward, fruit_type_poison_info[0]);
-			
-				// output_action = action;
+				
+				
+				instantaneous_reward = 1 - 2*fruit_type_poison_info[1] ;
 
+				if(fruit_type_poison_info[1] == -1) {
+					this.dead = true;
+					instantaneous_reward = -1;
+				}
+
+			
 				
 				
 			}
@@ -104,8 +113,10 @@ public class CreatureFruitBanditsLogitsAdvice extends CreatureFruitBandits{
     	double stay_sick_probability = 0;
     	
     	double creature_learning_rate = 0.01;
+    	int deadly_fruit_index = -1;
     	
-    	WorldFruitBandits fruitworld = new WorldFruitBandits( num_fruit_types, fruit_type_probabilities, poison_probabilities		) ;
+    	
+    	WorldFruitBandits fruitworld = new WorldFruitBandits( num_fruit_types, fruit_type_probabilities, poison_probabilities, deadly_fruit_index		) ;
     	CreatureFruitBanditsLogitsAdvice creature = new CreatureFruitBanditsLogitsAdvice(num_fruit_types, stay_sick_probability, creature_learning_rate);
     	
     	

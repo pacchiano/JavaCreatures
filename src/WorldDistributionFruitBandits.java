@@ -12,18 +12,24 @@ public class WorldDistributionFruitBandits extends WorldDistribution{
 	//FruitBanditsWorld[] worlds;
 	//double[] worlds_probabilities;
 
+	int[] deadly_fruit_indices;
+	
+	
 	public WorldDistributionFruitBandits(int num_fruit_bandit_worlds, double[] worlds_probabilities,
-			int num_fruit_types, double[][] fruit_type_probabilities_matrix, double[][] poison_probabilities_matrix)
+			int num_fruit_types, double[][] fruit_type_probabilities_matrix, double[][] poison_probabilities_matrix, 
+			int[] deadly_fruit_indices)
 		throws Exception {
 		
 		super( num_fruit_bandit_worlds,  worlds_probabilities);
 		
 		
 		/// INITIALIZE FRUIT WORLDS
+		this.deadly_fruit_indices = deadly_fruit_indices;
+		
 		this.worlds = new WorldFruitBandits[num_fruit_bandit_worlds];
 		for (int i = 0; i < num_fruit_bandit_worlds; i++) {
 			this.worlds[i] = new WorldFruitBandits(num_fruit_types, fruit_type_probabilities_matrix[i],
-					poison_probabilities_matrix[i]);
+					poison_probabilities_matrix[i], this.deadly_fruit_indices[i]);
 			
 
 		}
@@ -44,11 +50,14 @@ public class WorldDistributionFruitBandits extends WorldDistribution{
 		double[][] poison_probabilities_matrix = { { .5, .4, .3 }, { 1, .4, .3 } };
 		double[] worlds_probabilities = { .5, .5 };
 
+		int[] deadly_fruit_indices = {-1,1};
+		
+		
 		try {
 
 			WorldDistributionFruitBandits fruit_worlds_distribution = new WorldDistributionFruitBandits(
 					num_fruit_bandit_worlds, worlds_probabilities, num_fruit_types, fruit_type_probabilities_matrix,
-					poison_probabilities_matrix);
+					poison_probabilities_matrix, deadly_fruit_indices);
 			
 			System.out.println("here!!");
 			System.out.println(Arrays.toString(fruit_worlds_distribution.worlds));

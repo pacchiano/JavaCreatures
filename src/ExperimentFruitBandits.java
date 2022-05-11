@@ -20,6 +20,8 @@ public class ExperimentFruitBandits extends Experiment{
 	double stay_sick_probability;
 	//private Random RandomGen = new Random();
 
+	int[] deadly_fruit_index;
+	
 	//int creature_horizon;
 	//ES evolver;
 	//double es_std;
@@ -34,7 +36,8 @@ public class ExperimentFruitBandits extends Experiment{
 	public ExperimentFruitBandits(int num_fruit_bandit_worlds, int num_fruit_types, double[] worlds_probabilities,
 			double[][] fruit_type_probabilities_matrix, double[][] poison_probabilities_matrix,
 			double stay_sick_probability, double es_std, int creature_horizon, double creature_learning_rate, 
-			ExperimentEvolverAdvicePostprocess advice_process_type, ExperimentFruitBanditsType experiment_type, 
+			int[] deadly_fruit_index, ExperimentEvolverAdvicePostprocess advice_process_type, 
+			ExperimentFruitBanditsType experiment_type, 
 			CreatureEvaluationUltimate creature_evaluation_type, int exp_identifier) throws Exception{
 
 
@@ -45,6 +48,7 @@ public class ExperimentFruitBandits extends Experiment{
 
 		this.experiment_type = experiment_type;
 		this.num_fruit_types = num_fruit_types;
+		this.deadly_fruit_index = deadly_fruit_index;
 		this.fruit_type_probabilities_matrix = fruit_type_probabilities_matrix;
 		this.poison_probabilities_matrix = poison_probabilities_matrix;
 
@@ -58,7 +62,7 @@ public class ExperimentFruitBandits extends Experiment{
 
 			this.worlds_distribution = new WorldDistributionFruitBandits(
 					num_fruit_bandit_worlds, worlds_probabilities, num_fruit_types, fruit_type_probabilities_matrix,
-					poison_probabilities_matrix);
+					poison_probabilities_matrix, this.deadly_fruit_index);
 
 			// this.fruitworld = new FruitBanditsWorld(num_fruit_types,
 			// fruit_type_probabilities, poison_probabilities);

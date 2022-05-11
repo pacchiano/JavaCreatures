@@ -9,12 +9,14 @@ public class MultiThreadedExperimentFruitBandits extends MultiThreadedExperiment
 	public MultiThreadedExperimentFruitBandits(int num_fruit_bandit_worlds, int num_fruit_types, double[] worlds_probabilities,
 			double[][] fruit_type_probabilities_matrix, double[][] poison_probabilities_matrix,
 			double stay_sick_probability, double es_std, int creature_horizon, double creature_learning_rate, 
-			int num_iterations, double es_step_size, ExperimentEvolverAdvicePostprocess advice_process_type,
-			ExperimentFruitBanditsType experiment_type, CreatureEvaluationUltimate creature_evaluation_type, int thread_index) throws Exception {
+			int num_iterations, double es_step_size, int[] deadly_fruit_indices, ExperimentEvolverAdvicePostprocess advice_process_type,
+			ExperimentFruitBanditsType experiment_type, CreatureEvaluationUltimate creature_evaluation_type, 
+			int thread_index) throws Exception {
 		
 		this.experiment = new ExperimentFruitBandits(num_fruit_bandit_worlds, num_fruit_types, worlds_probabilities,
 				fruit_type_probabilities_matrix, poison_probabilities_matrix,
-				stay_sick_probability, es_std, creature_horizon, creature_learning_rate, advice_process_type,
+				stay_sick_probability, es_std, creature_horizon, creature_learning_rate, deadly_fruit_indices,
+				advice_process_type,
 				experiment_type, creature_evaluation_type, thread_index);
 		
 		this.num_iterations = num_iterations;

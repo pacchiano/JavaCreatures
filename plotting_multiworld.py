@@ -216,7 +216,7 @@ if __name__ == "__main__":
 
 	list_experiment_bundles = [["MultiworldScenarioReactive1"], ["MultiworldScenarioAdaptive1"]]
 	list_creature_horizon = [100, 100]
-	list_num_iterations = [100000, 100000]
+	list_num_iterations = [1000, 1000]
 
 	plot_subtitle = "Ultimate Reward Comparison Accross Different Creature Architectures"
 	plot_filename = "multiworld-reward-evolverxcreature.png"

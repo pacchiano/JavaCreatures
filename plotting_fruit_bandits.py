@@ -128,6 +128,9 @@ def load_files(num_fruit_types, experiment_name, creature_horizon, num_iteration
 	fruit_world_indices_matrix = ast.literal_eval(lines[14].replace("\n", ""))
 	results["fruit_world_indices_matrix"] = fruit_world_indices_matrix
 
+	
+	deadly_fruit_indices = ast.literal_eval(lines[15].replace("\n", ""))
+	results["deadly_fruit_indices"] = deadly_fruit_indices
 
 	results["experiment_name"] = experiment_name
 

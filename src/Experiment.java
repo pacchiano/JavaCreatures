@@ -149,7 +149,7 @@ public abstract class Experiment {
 
 			PairIntegerDouble world_index_and_reward = this.evaluate_creature(this.evolver.get_weights_vector());
 			
-			double ultimate_reward_base = world_index_and_reward.get_my_double();
+			double ultimate_reward_base = world_index_and_reward.get_my_double();	
 			int world_index = world_index_and_reward.get_my_integer();
 			
 			

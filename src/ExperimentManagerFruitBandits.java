@@ -20,7 +20,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 	//String experiment_name;
 	ExperimentFruitBanditsType experiment_type;
 	
-	
+	int[] deadly_fruit_indices;
 	
 	
 	
@@ -31,9 +31,12 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     	this.num_fruit_types = 3;
     	
     	
+    	
     	this.creature_info_vector_size = this.num_fruit_types;
     	this.evolver_info_vector_size = this.num_fruit_types;
-    	
+    	this.deadly_fruit_indices = new int[1];
+    	this.deadly_fruit_indices[0] = -1;
+
     	
     	
     	this.num_worlds = 1;
@@ -60,6 +63,9 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     	this.experiment_type = ExperimentFruitBanditsType.PRIOR_POLICY;
     	this.creature_evaluation_type =  CreatureEvaluationUltimate.FINAL;
     	//this.experiment_type = ExperimentFruitBanditsType.PRIOR_POLICY;
+    	
+    	
+    	
     	
     	
     	
@@ -171,7 +177,21 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     	}
     	
     	
-    	
+    	if(experiment_name ==  "Catastrophic-ES-p1-CLRp001-H1000") {
+    		
+        	this.deadly_fruit_indices = new int[1];
+        	this.deadly_fruit_indices[0] = 0;
+
+
+    		
+        	this.num_iterations = 10000;
+        	this.creature_horizon = 1000;
+
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0.001;
+        	
+    	}
+
         	
     	
 
@@ -181,7 +201,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
         	this.num_iterations = 1000;
         	this.creature_horizon = 100;
 
-			
+        	this.deadly_fruit_indices = new int[2];
+        	this.deadly_fruit_indices[0] = -1;
+        	this.deadly_fruit_indices[1] = -1;
+        	
+
 	
 	    	this.num_worlds = 2;
 	    	this.worlds_probabilities = new double[2];
@@ -221,6 +245,10 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			
         	this.num_iterations = 1000;
         	this.creature_horizon = 100;
+        	this.deadly_fruit_indices = new int[2];
+        	this.deadly_fruit_indices[0] = -1;
+        	this.deadly_fruit_indices[1] = -1;
+        	
 
 	    	this.num_worlds = 2;
 	    	this.worlds_probabilities = new double[2];
@@ -275,7 +303,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 		ExperimentFruitBandits experiment = new ExperimentFruitBandits(this.num_worlds, this.num_fruit_types, 
 				this.worlds_probabilities, this.fruit_type_probabilities_matrix, 
     			this.poison_probabilities_matrix,  this.stay_sick_probability, 
-    			this.es_std, this.creature_horizon, this.creature_learning_rate, 
+    			this.es_std, this.creature_horizon, this.creature_learning_rate, this.deadly_fruit_indices,
     			this.advice_process_type,  this.experiment_type, this.creature_evaluation_type, exp_identifier);
 		
 		
@@ -295,7 +323,8 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 
 		MultiThreadedExperimentFruitBandits experiment = new MultiThreadedExperimentFruitBandits(this.num_worlds, this.num_fruit_types, this.worlds_probabilities, this.fruit_type_probabilities_matrix, 
     			this.poison_probabilities_matrix,  this.stay_sick_probability, this.es_std, this.creature_horizon, 
-    			this.creature_learning_rate,this.num_iterations, this.es_step_size, this.advice_process_type, 
+    			this.creature_learning_rate,this.num_iterations, this.es_step_size, 
+    			this.deadly_fruit_indices, this.advice_process_type, 
     			this.experiment_type, this.creature_evaluation_type, thread_index);
 		
 		
@@ -373,13 +402,13 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			myWriter.write("\n");
 
 			
-			
-			
 			myWriter.write(Arrays.deepToString(sweep_results.world_indices_matrix));
 			myWriter.write("\n");
 			
 			
-			
+			myWriter.write(Arrays.toString(this.deadly_fruit_indices));
+			myWriter.write("\n");
+						
 			myWriter.close();
 			System.out.println("Successfully wrote to the file.");
 	
@@ -436,11 +465,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 //				"Scenario2", "Scenario3", "Scenario4", "Scenario5" };
 
 		
-		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	 };
+//		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	 };
 
 		
-//		String[] experiment_names = {  "Baldwin-ES-p1-Reactive"		, "Baldwin-ES-p1-CLRp1-H100",  "Baldwin-ES-p1-CLRp01-H100",
-//				"Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H1000", "Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000"};
+		String[] experiment_names = {  "Baldwin-ES-p1-Reactive"		, "Baldwin-ES-p1-CLRp1-H100",  "Baldwin-ES-p1-CLRp01-H100",
+				"Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H1000", "Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000"};
 
 		
 		
@@ -463,7 +492,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			
 
 			
-			String folder_name = "/Users/apacchiano/Documents/Research/JavaProjects/CreaturesNewcopy/results/";
+			String folder_name = "./results/";
 			String file_name_stub = exp_manager.get_experiment_filename_stub();
 			//String file_location = "./results/" + file_name + ".txt";
 			

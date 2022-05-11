@@ -54,6 +54,13 @@ public class CreatureFruitBanditsProximateAdvice extends CreatureFruitBandits{
 			
 		}
 		
+		if(this.dead) {
+			
+			output_action = -1;
+			instantaneous_ultimate_reward = -1;
+	}
+		
+		
 		
 		/// If the creature is still sick
 		if(!this.sick) {
@@ -66,6 +73,14 @@ public class CreatureFruitBanditsProximateAdvice extends CreatureFruitBandits{
 				//System.out.println("Updated probabilities!!");
 				instantaneous_ultimate_reward = 1 - 2*fruit_type_poison_info[1] ;
 				instantaneous_proximate_reward = this.proximate_rewards[(int)fruit_type_poison_info[0]];
+				
+				
+				
+				if(fruit_type_poison_info[1] == -1) {
+					this.dead = true;
+					instantaneous_ultimate_reward = -1;
+				}
+				
 				
 //				this.sick = fruit_type_poison_info[1] == 1;
 //				//// Only update when the creature is taking a decision while not sick.
@@ -109,8 +124,12 @@ public class CreatureFruitBanditsProximateAdvice extends CreatureFruitBandits{
     	double stay_sick_probability = 0;
     	
     	double creature_learning_rate = 0.01;
+    	int deadly_fruit_index = -1;
     	
-    	WorldFruitBandits fruitworld = new WorldFruitBandits( num_fruit_types, fruit_type_probabilities, poison_probabilities		) ;
+    	
+    	
+    	WorldFruitBandits fruitworld = new WorldFruitBandits( num_fruit_types, fruit_type_probabilities, 
+    			poison_probabilities, deadly_fruit_index);
     	CreatureFruitBanditsProximateAdvice creature = new CreatureFruitBanditsProximateAdvice(num_fruit_types, stay_sick_probability, creature_learning_rate);
     	
     	

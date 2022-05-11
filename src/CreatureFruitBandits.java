@@ -7,6 +7,8 @@ public abstract class CreatureFruitBandits extends Creature{
 	protected double stay_sick_probability; 
 	protected boolean sick = false;
 
+	protected boolean dead = false;
+	
 	protected double creature_learning_rate;
 	
 	
@@ -38,6 +40,10 @@ public abstract class CreatureFruitBandits extends Creature{
 		return this.sick;
 	}
 	
+	public boolean is_dead() {
+		return this.dead;
+	}
+	
 	
 		
 	public void update(double[] fruit_type_poison_info, PairIntegerDouble action_reward, double[] dummy_fruit_type_poison_info) {
@@ -47,7 +53,10 @@ public abstract class CreatureFruitBandits extends Creature{
 		if(action_reward.get_my_integer() == 1) {
 			this.sick = (int)fruit_type_poison_info[1] == 1;
 			
-			//// Only update when the creature is taking a decision while not sick.
+			
+			
+			
+			//// Only update when the creature is taking a decision while not sick or dead.
 			this.update_logits(action_reward.get_my_double(), (int)fruit_type_poison_info[0]);
 		}
 			
@@ -66,6 +75,7 @@ public abstract class CreatureFruitBandits extends Creature{
 		this.ultimate_reward_collected = 0;
 		this.last_reward_collected = 0;
 		
+		this.dead = false;
 		this.sick = false;
 		this.update_probability_weights();
 		
