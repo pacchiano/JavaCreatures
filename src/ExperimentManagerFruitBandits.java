@@ -67,7 +67,10 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     	
     	
     	
-    	
+    	//////////////////////////////
+    	///// Proximate Basic ////////
+    	//////////////////////////////
+
     	
     	if(experiment_name ==  "ProximateBasic1") {
         	this.num_iterations = 1000;//10000;
@@ -96,6 +99,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     	}
 
     	
+    	//////////////////////////////
+    	///// Baldwin Reactive ///////
+    	//////////////////////////////
+    	
+    	
     	if(experiment_name ==  "Baldwin-ES-p1-Reactive") {
     		
         	this.num_iterations = 1000000;
@@ -107,7 +115,32 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
         	
     	}
     	
+    	if(experiment_name ==  "Baldwin-ES-p01-Reactive") {
+    		
+        	this.num_iterations = 1000000;
+        	this.creature_horizon = 10;
+        	
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0;
+    		 
+        	
+    	}
 
+    	if(experiment_name ==  "Baldwin-ES-p001-Reactive") {
+    		
+        	this.num_iterations = 1000000;
+        	this.creature_horizon = 10;
+        	
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0;
+    		 
+        	
+    	}
+    	
+    	//////////////////////////////
+    	///// Baldwin horizon 100 ////
+    	//////////////////////////////
+    	
     	if(experiment_name ==  "Baldwin-ES-p1-CLRp1-H100") {
   
         	this.num_iterations = 100000;
@@ -119,6 +152,29 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
         	
     	}
 
+    	
+    	if(experiment_name ==  "Baldwin-ES-p01-CLRp1-H100") {
+    		  
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+        	
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0.1;
+    		   		
+        	
+    	}
+    	
+    	if(experiment_name ==  "Baldwin-ES-p001-CLRp1-H100") {
+  		  
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+        	
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0.1;
+    		   		
+        	
+    	}
+    	
 
     	if(experiment_name ==  "Baldwin-ES-p1-CLRp01-H100") {
     		
@@ -129,6 +185,27 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
         	this.creature_learning_rate = 0.01;
         	
     	}
+    	
+    	if(experiment_name ==  "Baldwin-ES-p01-CLRp01-H100") {
+    		
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0.01;
+        	
+    	}
+
+    	if(experiment_name ==  "Baldwin-ES-p001-CLRp01-H100") {
+    		
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0.01;
+        	
+    	}
+    	
 
 
     	if(experiment_name ==  "Baldwin-ES-p1-CLRp001-H100") {
@@ -142,6 +219,31 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     	}
 
     	
+    	if(experiment_name ==  "Baldwin-ES-p01-CLRp001-H100") {
+    		
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0.001;
+        	
+    	}
+    	
+    	if(experiment_name ==  "Baldwin-ES-p001-CLRp001-H100") {
+    		
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0.001;
+        	
+    	}
+    	
+    	
+    	
+    	//////////////////////////////
+    	//// Baldwin Horizon 1000 ////
+    	//////////////////////////////
     	
     	if(experiment_name ==  "Baldwin-ES-p1-CLRp1-H1000") {
     		
@@ -153,7 +255,37 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     		   		
         	
     	}
+    	
+    	
+    	
+    	if(experiment_name ==  "Baldwin-ES-p01-CLRp1-H1000") {
+    		
+        	this.num_iterations = 10000;
+        	this.creature_horizon = 1000;
 
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0.1;
+    		   		
+        	
+    	}
+
+    	
+    	
+    	
+    	if(experiment_name ==  "Baldwin-ES-p001-CLRp1-H1000") {
+    		
+        	this.num_iterations = 10000;
+        	this.creature_horizon = 1000;
+
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0.1;
+    		   		
+        	
+    	}
+
+    	
+    	
+    	
 
     	if(experiment_name ==  "Baldwin-ES-p1-CLRp01-H1000") {
     		
@@ -166,6 +298,28 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     	}
 
 
+    	if(experiment_name ==  "Baldwin-ES-p01-CLRp01-H1000") {
+    		
+        	this.num_iterations = 10000;
+        	this.creature_horizon = 1000;
+
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0.01;
+        	
+    	}
+
+    	if(experiment_name ==  "Baldwin-ES-p001-CLRp01-H1000") {
+    		
+        	this.num_iterations = 10000;
+        	this.creature_horizon = 1000;
+
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0.01;
+        	
+    	}
+
+    	
+    	
     	if(experiment_name ==  "Baldwin-ES-p1-CLRp001-H1000") {
     		
         	this.num_iterations = 10000;
@@ -176,6 +330,29 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
         	
     	}
     	
+    	if(experiment_name ==  "Baldwin-ES-p01-CLRp001-H1000") {
+    		
+        	this.num_iterations = 10000;
+        	this.creature_horizon = 1000;
+
+        	this.es_step_size = .01;
+        	this.creature_learning_rate = 0.001;
+        	
+    	}
+
+    	if(experiment_name ==  "Baldwin-ES-p001-CLRp001-H1000") {
+    		
+        	this.num_iterations = 10000;
+        	this.creature_horizon = 1000;
+
+        	this.es_step_size = .001;
+        	this.creature_learning_rate = 0.001;
+        	
+    	}
+    	
+    	///////////////////////////
+    	/////// Catastrophic //////
+    	///////////////////////////
     	
     	if(experiment_name ==  "Catastrophic-ES-p1-CLRp001-H1000") {
     		
@@ -192,14 +369,66 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
         	
     	}
 
+        
+    	
+    	
+    	
+    	
+    	
+    	
+    	if(experiment_name ==  "Catastrophic-ES-p1-CLRp001-H100") {
+    		
+        	this.deadly_fruit_indices = new int[1];
+        	this.deadly_fruit_indices[0] = 0;
+
+
+    		
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0.001;
         	
+    	}
+
+
+    	if(experiment_name ==  "Catastrophic-ES-p1-CLRp001-H10") {
+    		
+        	this.deadly_fruit_indices = new int[1];
+        	this.deadly_fruit_indices[0] = 0;
+
+
+    		
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 100;
+
+        	this.es_step_size = .1;
+        	this.creature_learning_rate = 0;
+        	
+    	}
+
+
     	
 
+    	
+    	
+    	
+    	///////////////////////////
+    	/////// Multiworld //////
+    	///////////////////////////
+
+    	
+    	
+    	
+    	
+    	
+    	
+    	
 		/// Poison prob = 1 for one fruit.
 		else if (experiment_name == "MultiworldScenarioReactive1")
 		{	    	
-        	this.num_iterations = 1000;
-        	this.creature_horizon = 100;
+        	this.num_iterations = 100000;
+        	this.creature_horizon = 10;
 
         	this.deadly_fruit_indices = new int[2];
         	this.deadly_fruit_indices[0] = -1;
@@ -221,7 +450,8 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 	    	this.fruit_type_probabilities_matrix[1][1] = .33;
 	    	this.fruit_type_probabilities_matrix[1][2] = .34;
 	    	
-	    	
+        	this.es_step_size = .01;
+
 	    	
 	    	
 	    	this.poison_probabilities_matrix = new double[this.num_worlds][this.num_fruit_types];
@@ -243,12 +473,13 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 		{	    	
 			
 			
-        	this.num_iterations = 1000;
+        	this.num_iterations = 100000;
         	this.creature_horizon = 100;
         	this.deadly_fruit_indices = new int[2];
         	this.deadly_fruit_indices[0] = -1;
         	this.deadly_fruit_indices[1] = -1;
         	
+        	this.es_step_size = .01;
 
 	    	this.num_worlds = 2;
 	    	this.worlds_probabilities = new double[2];
@@ -277,11 +508,27 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 
 	    	
 	    	this.stay_sick_probability = 0;
-	    	this.creature_learning_rate = 0.1;
+	    	this.creature_learning_rate = 0.01;
 
 	    	
 	    	
 		}		
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	//////////////////////////////////////
+    	/////// Multiworld Catastrophic //////
+    	//////////////////////////////////////
+
+    	
+    	
 
 			
 	}
@@ -532,10 +779,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 //		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	 };
 
 //		
-		String[] experiment_names = {  "Baldwin-ES-p1-Reactive"		, "Baldwin-ES-p1-CLRp1-H100",  "Baldwin-ES-p1-CLRp01-H100",
-				"Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H1000", "Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000"};
+//		String[] experiment_names = {  "Baldwin-ES-p1-Reactive"		, "Baldwin-ES-p1-CLRp1-H100",  "Baldwin-ES-p1-CLRp01-H100",
+//				"Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H1000", "Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000"};
 
-		
+		String[] experiment_names = {"Catastrophic-ES-p1-CLRp001-H1000", "Catastrophic-ES-p1-CLRp001-H100", 
+				"Catastrophic-ES-p1-CLRp001-H10",  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"};
 		
 		
 //		String[] experiment_names = {  "Baldwin-ES-p1-Reactive" };

@@ -50,7 +50,7 @@ public class WorldFruitBandits extends World {
 		
 		result[1] = is_poisonous;
 		
-		if(fruit_type_index == this.deadly_fruit_index) {
+		if(fruit_type_index == this.deadly_fruit_index & is_poisonous == 1) {
 			result[1] = -1;
 			
 		}
