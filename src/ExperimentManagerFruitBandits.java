@@ -61,7 +61,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 
     	this.advice_process_type = ExperimentEvolverAdvicePostprocess.LOGITS_TO_PROBS;
     	this.experiment_type = ExperimentFruitBanditsType.PRIOR_POLICY;
-    	this.creature_evaluation_type =  CreatureEvaluationUltimate.FINAL;
+    	this.creature_evaluation_type =  CreatureEvaluationUltimate.AVERAGE;
     	//this.experiment_type = ExperimentFruitBanditsType.PRIOR_POLICY;
     	
     	
