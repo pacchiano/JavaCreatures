@@ -23,7 +23,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 	int[] deadly_fruit_indices;
 	
 	
-	
+	int logging_frequency;
 
 	public void set_experiment_params(String experiment_name) {
 		this.experiment_name = experiment_name;
@@ -283,11 +283,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 	    	
 		}		
 
-		
-    	
-    	
-    	
-		
+			
 	}
 	
 	
@@ -325,14 +321,9 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
     			this.poison_probabilities_matrix,  this.stay_sick_probability, this.es_std, this.creature_horizon, 
     			this.creature_learning_rate,this.num_iterations, this.es_step_size, 
     			this.deadly_fruit_indices, this.advice_process_type, 
-    			this.experiment_type, this.creature_evaluation_type, thread_index);
-		
-		
-
+    			this.experiment_type, this.creature_evaluation_type, thread_index);		
 		
 		return experiment;
-	
-		
 		
 		
 	}
@@ -349,7 +340,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 
 	
 	
-	public void write_log_file(String folder, String file_name_stub, ExperimentManagerResults sweep_results) {
+	public void write_log_file(String folder, String file_name_stub, ExperimentManagerResults sweep_results, boolean trim) {
 		
 		
 		
@@ -392,23 +383,43 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			myWriter.write(String.valueOf(this.creature_learning_rate));
 			myWriter.write("\n");			
 			
-			myWriter.write(Arrays.deepToString(sweep_results.rewards_matrix));
-			myWriter.write("\n");
-
-			myWriter.write(Arrays.deepToString(sweep_results.creature_info_tensor));
-			myWriter.write("\n");
-
-			myWriter.write(Arrays.deepToString(sweep_results.evolver_info_tensor));
-			myWriter.write("\n");
-
 			
-			myWriter.write(Arrays.deepToString(sweep_results.world_indices_matrix));
-			myWriter.write("\n");
+			/// Recall sweep_results.rewards_matrix is a [num_experiments][num_iterations]
+			///        sweep_results.creature_info_tensor is a [nm_experiments][num_iterations][creature_info_vector_size]
+			///        sweep_results.evolver_info_tensor is a [nm_experiments][num_iterations][evolver_info_vector_size]
+			///        sweep_results.world_indices_matrix is a [nm_experiments][nm_iterations]
 			
+			
+			if(!trim) {
+				
+				myWriter.write(Arrays.deepToString(sweep_results.rewards_matrix));
+				myWriter.write("\n");
+	
+				myWriter.write(Arrays.deepToString(sweep_results.creature_info_tensor));
+				myWriter.write("\n");
+	
+				myWriter.write(Arrays.deepToString(sweep_results.evolver_info_tensor));
+				myWriter.write("\n");
+	
+				
+				myWriter.write(Arrays.deepToString(sweep_results.world_indices_matrix));
+				myWriter.write("\n");
+			
+			}
+			else {
+				
+				
+				
+				
+				
+			}
+	
 			
 			myWriter.write(Arrays.toString(this.deadly_fruit_indices));
 			myWriter.write("\n");
-						
+			
+			
+			
 			myWriter.close();
 			System.out.println("Successfully wrote to the file.");
 	
@@ -426,12 +437,10 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			ZipFile.zip_file(tmp_zip_filename, zip_filename);
 
 			
-			//			
-//
-//			//// Deleting the tmp zip file
-//			
-//			File tmpZipFile = new File(tmp_zip_filename);
-//			tmpZipFile.delete();
+
+			//// Deleting the tmp zip file			
+			File tmpZipFile = new File(tmp_zip_filename);
+			tmpZipFile.delete();
 			
 
 			
@@ -516,7 +525,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			
 			exp_manager.write_log_file(folder_name, file_name_stub, sweep_results);
 			
-
+			
 
 		}
 

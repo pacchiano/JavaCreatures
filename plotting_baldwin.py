@@ -191,7 +191,7 @@ if __name__ == "__main__":
 
 	list_experiment_bundles = [["Baldwin-ES-p1-Reactive"], ["Baldwin-ES-p1-CLRp01-H100", "Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H100"], ["Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000", "Baldwin-ES-p1-CLRp1-H1000"]]
 	list_creature_horizon = [10, 100, 1000]
-	list_num_iterations = [10000, 1000, 100]
+	list_num_iterations = [1000000, 100000, 10000]
 
 	plot_subtitle = "Ultimate Reward Comparison Accross Different Creature Architectures"
 	plot_filename = "baldwin-reward-evolverxcreature.png"

@@ -172,8 +172,13 @@ class ExperimentManagerResults{
 		
 	}
 	
+
+	
 	
 }
+
+
+
 
 
 
@@ -227,6 +232,42 @@ public final class Utilities {
 		return Math.sqrt(sum_squares);		
 		
 	}
+	
+	
+	
+	public static double[][] subsample_two_dim_array(double[][] input_array, int subsample_frequency, int dim1, int dim2, int subsample_index){
+		
+		if(subsample_index == 0) {
+		
+			
+			
+			double[][] result = new double[(int) dim1/subsample_frequency][dim2];
+		
+		
+		}
+
+		
+		if(subsample_index == 0) {
+		
+			
+			
+			double[][] result = new double[dim1][dim2/subsample_frequency];
+		
+		
+		}
+
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 	
 
 }
