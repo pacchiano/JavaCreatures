@@ -120,7 +120,7 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
 
 	
 	
-	public void write_log_file(String folder, String file_name_stub, ExperimentManagerResults sweep_results) {
+	public void write_log_file(String folder, String file_name_stub, ExperimentManagerResults sweep_results, boolean trim) {
 		
 		
 		
@@ -184,7 +184,7 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
 			
 			myWriter.close();
 			System.out.println("Successfully wrote to the file.");
-	
+			System.out.println("Trimming of the results is not implemented");
 			String zip_filename = folder + file_name_stub + ".zip";
 			ZipFile.zip_file(txt_filename, zip_filename);
 			
@@ -260,7 +260,7 @@ public class ExperimentManagerChainMDP extends ExperimentManager {
 			
 
 			
-			exp_manager.write_log_file(folder_name, file_name_stub, sweep_results);
+			exp_manager.write_log_file(folder_name, file_name_stub, sweep_results, false);
 			
 
 

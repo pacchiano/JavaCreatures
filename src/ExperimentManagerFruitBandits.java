@@ -474,8 +474,8 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			
 			//// Double zip
 			String zip_filename;
-			if(trim) {
-				zip_filename = folder + file_name_stub + "_trim.zip";
+			if(!trim) {
+				zip_filename = folder + file_name_stub + "_notrim.zip";
 			}
 			else {
 				zip_filename = folder + file_name_stub + ".zip";		
@@ -521,11 +521,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 //				"Scenario2", "Scenario3", "Scenario4", "Scenario5" };
 
 		
-//		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	 };
+		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	 };
 
-		
-		String[] experiment_names = {  "Baldwin-ES-p1-Reactive"		, "Baldwin-ES-p1-CLRp1-H100",  "Baldwin-ES-p1-CLRp01-H100",
-				"Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H1000", "Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000"};
+//		
+//		String[] experiment_names = {  "Baldwin-ES-p1-Reactive"		, "Baldwin-ES-p1-CLRp1-H100",  "Baldwin-ES-p1-CLRp01-H100",
+//				"Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H1000", "Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000"};
 
 		
 		
