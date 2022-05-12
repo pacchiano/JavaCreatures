@@ -67,18 +67,24 @@ def plot_multiworld_rewards(plot_subtitle, plot_filename, list_experiment_bundle
 	for experiment_bundle,creature_horizon, num_iterations, i in zip(list_experiment_bundles, list_creature_horizon, list_num_iterations, range(len(list_experiment_bundles))):
 		results_matrices_list = []
 		
-		timesteps = np.arange(num_iterations) +1
-		if not evolver_time:
-			timesteps = (np.arange(num_iterations)+1)*creature_horizon
-		
+		logging_frequency = None
 		for experiment_name in experiment_bundle:
 			print("preparing to load experiment results {}".format(experiment_name))
 			results = load_files(num_fruit_types, experiment_name, creature_horizon, num_iterations)
 			print("loaded files {} ".format(experiment_name))
 			results_matrices_list.append(results["reward_results"])
+			if logging_frequency != None and logging_frequency != results["logging_frequency"]:
+				raise ValueError("Incompatible logging_frequencies accross experiments")
+			logging_frequency = results["logging_frequency"]
+
 
 		pointwise_max_reward, pointwise_std =  aggregate_results_max_performance(results_matrices_list, averaging_window)
 		#IPython.embed()
+
+		timesteps = np.arange(num_iterations/logging_frequency)*logging_frequency +1
+
+		if not evolver_time:
+			timesteps = (np.arange(num_iterations/logging_frequency)*logging_frequency+1)*creature_horizon
 
 
 
@@ -122,6 +128,9 @@ def plot_multiworld_probabilities(plot_subtitle, plot_filename, list_experiment_
 	for experiment_name, creature_horizon, num_iterations, i in zip(list_experiment_names, list_creature_horizon, list_num_iterations, range(len(list_experiment_names))):
 
 		results = load_files(num_fruit_types, experiment_name, creature_horizon, num_iterations)
+
+		logging_frequency = results["logging_frequency"]
+
 		
 		probabilities_matrix_creature = np.array(results["used_probabilities_creature"])
 		probabilities_matrix_evolver = np.array(results["used_probabilities_evolver"])
@@ -137,20 +146,20 @@ def plot_multiworld_probabilities(plot_subtitle, plot_filename, list_experiment_
 		for j in range(num_experiments):
 			fruit_world_indices_experiment_list = fruit_world_indices_matrix[j,:]
 			mask = fruit_world_indices_experiment_list == world_index
-			indices_mask = np.arange(num_iterations)[mask]
+			indices_mask = np.arange(num_iterations/logging_frequency)[mask]
 
 			for fruit_type in range(num_fruit_types):
 				focus_probs_evolver = probabilities_matrix_evolver[j, :, fruit_type][mask]
 				focus_probs_creature = probabilities_matrix_creature[j, :, fruit_type][mask]
 
-				interpolated_probabilities_matrix_evolver[j, :, fruit_type] = np.interp(np.arange(num_iterations),  indices_mask, focus_probs_evolver  )
-				interpolated_probabilities_matrix_creature[j, :, fruit_type] = np.interp(np.arange(num_iterations),  indices_mask, focus_probs_creature  )
+				interpolated_probabilities_matrix_evolver[j, :, fruit_type] = np.interp(np.arange(num_iterations/logging_frequency),  indices_mask, focus_probs_evolver  )
+				interpolated_probabilities_matrix_creature[j, :, fruit_type] = np.interp(np.arange(num_iterations/logging_frequency),  indices_mask, focus_probs_creature  )
 
 
 
-		timesteps = np.arange(num_iterations) +1
+		timesteps = np.arange(num_iterations/logging_frequency)*logging_frequency +1
 		if not evolver_time:
-			timesteps = (np.arange(num_iterations)+1)*creature_horizon
+			timesteps = (np.arange(num_iterations/logging_frequency)*logging_frequency+1)*creature_horizon
 
 		label = "T{} H{}{}".format(num_iterations, creature_horizon, list_names[i])
 
@@ -158,7 +167,8 @@ def plot_multiworld_probabilities(plot_subtitle, plot_filename, list_experiment_
 			 averaging_window = averaging_window)
 
 
-
+		# IPython.embed()
+		# raise ValueError("asldkfm")
 
 
 		plt.plot(timesteps, mean_probabilities_evolver[:,fruit_index], label = "{} Evolver".format(label), linestyle='dashed', linewidth = 3, color = colors[i])

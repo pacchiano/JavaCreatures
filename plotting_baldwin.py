@@ -66,18 +66,25 @@ def plot_baldwin_rewards(plot_subtitle, plot_filename, list_experiment_bundles, 
 	for experiment_bundle,creature_horizon, num_iterations, i in zip(list_experiment_bundles, list_creature_horizon, list_num_iterations, range(len(list_experiment_bundles))):
 		results_matrices_list = []
 		
-		timesteps = np.arange(num_iterations) + 1
-		if not evolver_time:
-			timesteps = (np.arange(num_iterations)+1)*creature_horizon
 		
+		logging_frequency = None
+
 		for experiment_name in experiment_bundle:
 			print("preparing to load experiment results {}".format(experiment_name))
 			results = load_files(num_fruit_types, experiment_name, creature_horizon, num_iterations)
 			print("loaded files {} ".format(experiment_name))
 			results_matrices_list.append(results["reward_results"])
+			if logging_frequency != None and logging_frequency != results["logging_frequency"]:
+				raise ValueError("Logging frequency incompatible accross experiments - Baldwin")
+			logging_frequency = results["logging_frequency"]
+
 
 		pointwise_max_reward, pointwise_std =  aggregate_results_max_performance(results_matrices_list, averaging_window)
 		#IPython.embed()
+
+		timesteps = np.arange(num_iterations/logging_frequency)*logging_frequency + 1
+		if not evolver_time:
+			timesteps = (np.arange(num_iterations/logging_frequency)*logging_frequency+1)*creature_horizon
 
 
 
@@ -126,12 +133,12 @@ def plot_baldwin_probabilities(plot_subtitle, plot_filename, list_experiment_nam
 		probabilities_matrix_evolver = np.array(results["used_probabilities_evolver"])
 
 		
-		
+		logging_frequency = results["logging_frequency"]
 
 
-		timesteps = np.arange(num_iterations) +1
+		timesteps = np.arange(num_iterations/logging_frequency)*logging_frequency +1
 		if not evolver_time:
-			timesteps = (np.arange(num_iterations)+1)*creature_horizon
+			timesteps = (np.arange(num_iterations/logging_frequency)*logging_frequency+1)*creature_horizon
 
 		label = "T{} H{}{}".format(num_iterations, creature_horizon, list_names[i])
 

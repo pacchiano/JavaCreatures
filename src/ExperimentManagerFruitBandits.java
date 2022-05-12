@@ -452,7 +452,15 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			myWriter.write(Arrays.toString(this.deadly_fruit_indices));
 			myWriter.write("\n");
 			
+			if(! trim) {
+				
+				myWriter.write(String.valueOf(1));
+					
+			}
+			else {
 			myWriter.write(String.valueOf(this.logging_frequency));
+			
+			}
 			myWriter.write("\n");
 			
 			
@@ -521,11 +529,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 //				"Scenario2", "Scenario3", "Scenario4", "Scenario5" };
 
 		
-		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	 };
+//		String[] experiment_names = {  "MultiworldScenarioReactive1", "MultiworldScenarioAdaptive1"	 };
 
 //		
-//		String[] experiment_names = {  "Baldwin-ES-p1-Reactive"		, "Baldwin-ES-p1-CLRp1-H100",  "Baldwin-ES-p1-CLRp01-H100",
-//				"Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H1000", "Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000"};
+		String[] experiment_names = {  "Baldwin-ES-p1-Reactive"		, "Baldwin-ES-p1-CLRp1-H100",  "Baldwin-ES-p1-CLRp01-H100",
+				"Baldwin-ES-p1-CLRp001-H100", "Baldwin-ES-p1-CLRp1-H1000", "Baldwin-ES-p1-CLRp01-H1000", "Baldwin-ES-p1-CLRp001-H1000"};
 
 		
 		
