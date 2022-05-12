@@ -185,7 +185,7 @@ if __name__ == "__main__":
 	focus_fruit_world_index = 0
 
 
-	plot_theme = "Catastrophic Events"
+	plot_theme = "Baldwin"
 
 	##### Baldwin reward plots
 
