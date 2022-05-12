@@ -235,36 +235,123 @@ public final class Utilities {
 	
 	
 	
-	public static double[][] subsample_two_dim_array(double[][] input_array, int subsample_frequency, int dim1, int dim2, int subsample_index){
+	public static double[][] subsample_two_dim_array(double[][] input_array, int subsample_frequency, int dim0, int dim1, int subsample_index){
 		
-		if(subsample_index == 0) {
+	
 		
+			int indicator_dim0 = subsample_index == 0 ? 1:0;
+			int indicator_dim1 = subsample_index == 1 ? 1:0;
+			
+			int new_dim0 = ((int) dim0/subsample_frequency)*indicator_dim0 + dim0*(1-indicator_dim0);
+			int new_dim1 = ((int) dim1/subsample_frequency)*indicator_dim1 + dim1*(1-indicator_dim1);
 			
 			
-			double[][] result = new double[(int) dim1/subsample_frequency][dim2];
-		
-		
-		}
-
-		
-		if(subsample_index == 0) {
-		
+			double[][] result = new double[new_dim0][new_dim1];
+			
+			for(int i=0; i < new_dim0; i ++) {
+				for(int j =0; j < new_dim1; j++) {
+					int original_index0 = i*(1-indicator_dim0) + subsample_frequency*i*indicator_dim0;
+					int original_index1 = j*(1-indicator_dim1) + subsample_frequency*j*indicator_dim1;
+					 
+					result[i][j] = input_array[original_index0][original_index1];
+					
+					
+				}
+				
+				
+				
+				
+				
+			}
 			
 			
-			double[][] result = new double[dim1][dim2/subsample_frequency];
-		
-		
-		}
-
-		
-		
-		
-		
+			return result;
 		
 		
 	}
+
+	
+	public static int[][] subsample_two_dim_array(int[][] input_array, int subsample_frequency, int dim0, int dim1, int subsample_index){
+		
+		
+		
+		int indicator_dim0 = subsample_index == 0 ? 1:0;
+		int indicator_dim1 = subsample_index == 1 ? 1:0;
+		
+		int new_dim0 = ((int) dim0/subsample_frequency)*indicator_dim0 + dim0*(1-indicator_dim0);
+		int new_dim1 = ((int) dim1/subsample_frequency)*indicator_dim1 + dim1*(1-indicator_dim1);
+		
+		
+		int[][] result = new int[new_dim0][new_dim1];
+		
+		for(int i=0; i < new_dim0; i ++) {
+			for(int j =0; j < new_dim1; j++) {
+				int original_index0 = i*(1-indicator_dim0) + subsample_frequency*i*indicator_dim0;
+				int original_index1 = j*(1-indicator_dim1) + subsample_frequency*j*indicator_dim1;
+				 
+				result[i][j] = input_array[original_index0][original_index1];
+				
+				
+			}
+			
+			
+			
+			
+			
+		}
+		
+		
+		return result;
 	
 	
+}
+
+
+	
+	
+	
+	
+	
+	
+	public static double[][][] subsample_three_dim_array(double[][][] input_array, int subsample_frequency, int dim0, int dim1, int dim2, int subsample_index){
+		
+	
+		
+			int indicator_dim0 = subsample_index == 0 ? 1:0;
+			int indicator_dim1 = subsample_index == 1 ? 1:0;
+			int indicator_dim2 = subsample_index == 2 ? 1:0;
+			
+			int new_dim0 = ((int) dim0/subsample_frequency)*indicator_dim0 + dim0*(1-indicator_dim0);
+			int new_dim1 = ((int) dim1/subsample_frequency)*indicator_dim1 + dim1*(1-indicator_dim1);
+			int new_dim2 = ((int) dim2/subsample_frequency)*indicator_dim2 + dim2*(1-indicator_dim2);
+			
+			
+			double[][][] result = new double[new_dim0][new_dim1][new_dim2];
+			
+			for(int i=0; i < new_dim0; i ++) {
+				for(int j =0; j < new_dim1; j++) {
+					for(int l =0; l < new_dim2; l ++) {
+					int original_index0 = i*(1-indicator_dim0) + subsample_frequency*i*indicator_dim0;
+					int original_index1 = j*(1-indicator_dim1) + subsample_frequency*j*indicator_dim1;
+					int original_index2 = l*(1-indicator_dim2) + subsample_frequency*l*indicator_dim2;
+					 
+					result[i][j][l] = input_array[original_index0][original_index1][original_index2];
+					}
+					
+				}
+				
+				
+				
+				
+				
+			}
+			
+			
+			return result;
+		
+		
+	}
+
 	
 	
 	

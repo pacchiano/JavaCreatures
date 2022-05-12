@@ -29,7 +29,7 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 		this.experiment_name = experiment_name;
     	this.num_experiments = 30;
     	this.num_fruit_types = 3;
-    	
+    	this.logging_frequency = 10;
     	
     	
     	this.creature_info_vector_size = this.num_fruit_types;
@@ -390,7 +390,8 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			///        sweep_results.world_indices_matrix is a [nm_experiments][nm_iterations]
 			
 			
-			if(!trim) {
+			if(!trim) 
+			{
 				
 				myWriter.write(Arrays.deepToString(sweep_results.rewards_matrix));
 				myWriter.write("\n");
@@ -406,8 +407,41 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 				myWriter.write("\n");
 			
 			}
-			else {
+			else 
+			{
 				
+				double[][] trimmed_rewards_matrix = Utilities.subsample_two_dim_array(sweep_results.rewards_matrix, this.logging_frequency, 
+						this.num_experiments, this.num_iterations, 1);
+				
+				
+				
+				
+				double[][][] trimmed_creature_info_tensor =  Utilities.subsample_three_dim_array(sweep_results.creature_info_tensor, 
+						this.logging_frequency, this.num_experiments, this.num_iterations, this.num_fruit_types, 1);
+				
+	
+				double[][][] trimmed_evolver_info_tensor =  Utilities.subsample_three_dim_array(sweep_results.evolver_info_tensor, 
+						this.logging_frequency, this.num_experiments, this.num_iterations, this.num_fruit_types, 1);
+	
+				
+				int[][] trimmed_world_indices_matrix = Utilities.subsample_two_dim_array(sweep_results.world_indices_matrix, this.logging_frequency, 
+						this.num_experiments, this.num_iterations, 1);
+				
+				
+				
+				myWriter.write(Arrays.deepToString(trimmed_rewards_matrix));
+				myWriter.write("\n");
+	
+				myWriter.write(Arrays.deepToString(trimmed_creature_info_tensor));
+				myWriter.write("\n");
+	
+				myWriter.write(Arrays.deepToString(trimmed_evolver_info_tensor));
+				myWriter.write("\n");
+	
+				
+				myWriter.write(Arrays.deepToString(trimmed_world_indices_matrix));
+				myWriter.write("\n");
+
 				
 				
 				
@@ -417,6 +451,11 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			
 			myWriter.write(Arrays.toString(this.deadly_fruit_indices));
 			myWriter.write("\n");
+			
+			myWriter.write(String.valueOf(this.logging_frequency));
+			myWriter.write("\n");
+			
+			
 			
 			
 			
@@ -432,8 +471,16 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			txtFile.delete();
 			
 			
+			
 			//// Double zip
-			String zip_filename = folder + file_name_stub + ".zip";
+			String zip_filename;
+			if(trim) {
+				zip_filename = folder + file_name_stub + "_trim.zip";
+			}
+			else {
+				zip_filename = folder + file_name_stub + ".zip";		
+			}
+			
 			ZipFile.zip_file(tmp_zip_filename, zip_filename);
 
 			
@@ -523,7 +570,8 @@ public class ExperimentManagerFruitBandits extends ExperimentManager{
 			
 			
 			
-			exp_manager.write_log_file(folder_name, file_name_stub, sweep_results);
+			exp_manager.write_log_file(folder_name, file_name_stub, sweep_results, false);
+			exp_manager.write_log_file(folder_name, file_name_stub, sweep_results, true);
 			
 			
 

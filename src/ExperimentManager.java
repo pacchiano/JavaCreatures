@@ -30,7 +30,7 @@ public abstract class ExperimentManager {
 	
 	public abstract String get_experiment_filename_stub();
 	
-	public abstract void write_log_file(String folder, String file_name_stub, ExperimentManagerResults sweep_results);
+	public abstract void write_log_file(String folder, String file_name_stub, ExperimentManagerResults sweep_results, boolean trim);
 	
 	
 	public ExperimentManagerResults get_experiment_sweep_results_multithreaded() {
